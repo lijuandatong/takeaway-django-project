@@ -43,8 +43,8 @@
                     </div>
                 </li>
                 {% else %}
-                <li class="nav-item"><a href="" class="nav-link">Log in</a></li>
-                <li class="nav-item"><a href="" class="nav-link">Sign up</a></li>
+                <li class="nav-item"><a href="{% url 'auth_login' %}" class="nav-link">Log in</a></li>
+                <li class="nav-item"><a href="{% url 'registration_register' %}" class="nav-link">Sign up</a></li>
                 {% endif %}
                 <li class="nav-item cta cta-colored"><a href="" class="nav-link"><span
                         class="icon-shopping_cart"></span>[0]</a></li>
