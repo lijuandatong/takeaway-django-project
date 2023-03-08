@@ -110,7 +110,7 @@
                         </a>
                         <div class="text py-3 pb-4 px-3 text-left">
                             <h3><a href="#">Tofu with Kung Po Sauce</a></h3>
-                            <h3><a href="#">4 scores</a></h3>
+                            <input id="input-rating" type="text" title="" data-min=0 data-max=5 data-step=0.1 data-size="xs" value="4.5">
                             <div class="d-flex">
                                 <div class="pricing">
                                     <p class="price"><span class="mr-2 price-dc">$12.00</span><span class="price-sale">$8.00</span>
@@ -365,5 +365,19 @@
             </div>
         </div>
     </section>
+{% endblock %}
 
+{% block script_block %}
+<script>
+    $(document).ready(function () {
+        $("#input-rating").rating({
+            displayOnly: true,
+            showCaption: false,
+            showCaptionAsTitle: true,
+            starCaptions: function (val) {
+                    return '4.5 out of 5';
+                },
+        });
+    });
+</script>
 {% endblock %}

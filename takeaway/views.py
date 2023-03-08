@@ -33,3 +33,10 @@ def index(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('takeaway:index'))
+
+
+def user_account(request):
+    context_dict = {}
+    context_dict['boldmessage'] = 'account page!'
+
+    return render(request, 'takeaway/account.html', context=context_dict)
