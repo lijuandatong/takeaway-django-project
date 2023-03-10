@@ -35,7 +35,8 @@ SECRET_KEY = "django-insecure-dagq)y(qx-vlc)*wn2+ub43=!(umvf%rrg-flx)w$l_uo&sene
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['lijuanseeworld.pythonanywhere.com']
+ALLOWED_HOSTS = ['lijuanseeworld.pythonanywhere.com',
+                 '127.0.0.1']
 
 
 # Application definition
