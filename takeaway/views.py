@@ -33,7 +33,6 @@ class IndexView(View):
 class AccountView(View):
 
     def get_user_details(self, username):
-        print('get detials 函数进入')
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -46,7 +45,6 @@ class AccountView(View):
 
     @method_decorator(login_required)
     def get(self, request, username):
-        print('get函数进入')
         try:
             (user, user_profile, wallet) = self.get_user_details(username)
         except TypeError:
@@ -57,3 +55,20 @@ class AccountView(View):
                         'wallet': wallet,
                         }
         return render(request, 'takeaway/account.html', context_dict)
+
+
+class ChargeView(View):
+    def get(self, request):
+        username = request.GET['username']
+        amount = request.GET['amount']
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
+        wallet = Wallet.objects.get_or_create(user=user)[0]
+        wallet.cash = wallet.cash + float(amount)
+        wallet.save()
+
+        return HttpResponse(wallet.cash)
