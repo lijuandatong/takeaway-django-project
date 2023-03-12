@@ -5,5 +5,5 @@ app_name = "takeaway"
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("account/", views.user_account, name="account"),
+    path("account/<username>/", views.AccountView.as_view(), name="account"),
 ]

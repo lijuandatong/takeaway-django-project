@@ -30,7 +30,10 @@ MEDIA_URL = '/media/'
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-dagq)y(qx-vlc)*wn2+ub43=!(umvf%rrg-flx)w$l_uo&sene"
+key = None
+with open('secret.key') as f:
+    key = f.read().strip()
+SECRET_KEY = key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -138,7 +141,7 @@ REGISTRATION_OPEN = True
 # If True, the user will be automatically logged in after registering.
 REGISTRATION_AUTO_LOGIN = True
 # The URL that Django redirects users to after logging in.
-LOGIN_REDIRECT_URL = 'rango:index'
+LOGIN_REDIRECT_URL = 'takeaway:index'
 # The page users are directed to if they are not logged in.
 # This was set in a previous chapter. The registration package uses this, too.
 LOGIN_URL = 'auth_login'

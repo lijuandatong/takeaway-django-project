@@ -2,6 +2,7 @@ from datetime import datetime
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render
 
 # Create your views here.
@@ -9,19 +10,18 @@ from django.http import HttpResponse
 
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views import View
+
+from takeaway.models import Food, UserProfile, Wallet
 
 
 def index(request):
-    # return HttpResponse("Rango says hey there partner! <a href='/rango/about/'>About</a>")
-
-    # Query the database for a list of ALL categories currently stored.
-    # Order the categories by the number of likes in descending order.
-    # Retrieve the top 5 only -- or all if less than 5.
-    # Place the list in our context_dict dictionary (with our boldmessage!)
-    # that will be passed to the template engine.
+    # Query the database for a list of ALL foods currently stored.
+    food_list = Food.objects.all()
 
     context_dict = {}
-    context_dict['boldmessage'] = 'home page!'
+    context_dict['foods'] = food_list
 
     # Return a rendered response to send to the client.
     # We make use of the shortcut function to make our lives easier.
@@ -35,8 +35,36 @@ def user_logout(request):
     return redirect(reverse('takeaway:index'))
 
 
-def user_account(request):
-    context_dict = {}
-    context_dict['boldmessage'] = 'account page!'
+class AccountView(View):
 
-    return render(request, 'takeaway/account.html', context=context_dict)
+    def get_user_details(self, username):
+        print('get detials 函数进入')
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
+        user_profile = UserProfile.objects.get_or_create(user=user)[0]
+        wallet = Wallet.objects.get_or_create(user=user)[0]
+
+        return user, user_profile, wallet
+
+    @method_decorator(login_required)
+    def get(self, request, username):
+        print('get函数进入')
+        try:
+            (user, user_profile, wallet) = self.get_user_details(username)
+        except TypeError:
+            return redirect(reverse('takeaway:index'))
+
+        context_dict = {'user': user,
+                        'user_profile': user_profile,
+                        'wallet': wallet,
+                        }
+        return render(request, 'takeaway/account.html', context_dict)
+
+
+# @login_required
+# def user_logout(request):
+#     logout(request)
+#     return redirect(reverse('takeaway:index'))

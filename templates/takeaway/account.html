@@ -13,14 +13,16 @@
 </div>
 
 <div class="container" style="width: 600px; height: auto;">
-<div class="row">
     <h5>Username</h5>
-    <p>Lijuan</p>
+    <p>{{ user.username }}</p>
     <h5>Email</h5>
-    <p>ton.ghui@gmail.com</p>
+    <p>{{ user.email }}</p>
     <h5>Wallet</h5>
-    <p>20￡ + 300 points</p>
+    <p style="font-size:20px"><span style="color:black;">cash:   </span>￡{{ wallet.cash }}</p>
+    <p style="font-size:20px"><span style="color:black;">points:   </span>{{ wallet.points }}</p>
 
-</div>
+    {% if wallet.points == 0 %}
+            <p style="font-size:14px;color:black;">Tips: 200 points can be worth 1 pound when placing an order. Points can be earned by placing an order and commenting on an order.</p>
+    {% endif %}
 </div>
 {% endblock %}

@@ -7,28 +7,23 @@
 
 {% block body_block %}
 
-{#<link href="{% static 'css/sign-in.css' %}" rel="stylesheet">#}
-<main class="w-100 m-auto text-center" style="max-width: 330px; padding: 15px;">
-  <form>
-    <img class="mb-4" src="{% static 'images/favicon.ico' %}" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+<div class="p-4">
+    <div class="container" style="text-align: center;">
+        <h1 >Please login</h1>
+    </div>
+</div>
 
-    <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-      <label for="floatingInput">Email address</label>
-    </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-      <label for="floatingPassword">Password</label>
-    </div>
+<link href="{% static 'css/sign-in.css' %}" rel="stylesheet">
+<div class="container">
+    <form class="form-signin" role="form" method="post" action=".">
+        {% csrf_token %}
+        <label for="inputUsername" class="sr-only">Username</label>
+        <input type="text" name="username" id="id_username" class="form-control" placeholder="Username" required autofocus>
 
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
-  </form>
-</main>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input type="password" name="password" id="id_password" class="form-control" placeholder="Password" required>
+        
+        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Sign in</button>
+    </form>
+</div>
 {% endblock %}

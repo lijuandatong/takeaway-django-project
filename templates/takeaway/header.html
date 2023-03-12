@@ -24,7 +24,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
     <div class="container">
-        <a class="navbar-brand" href="index.html">Vegefoods</a>
+        <a class="navbar-brand" href="{% url 'takeaway:index' %}">Vegefoods</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                 aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="oi oi-menu"></span> Menu
@@ -36,11 +36,11 @@
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">Account</a>
+                       aria-haspopup="true" aria-expanded="false">Hello, {{ user.username }}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown04">
-                        <a class="dropdown-item" href="{% url 'takeaway:account' %}">Account info</a>
+                        <a class="dropdown-item" href="{% url 'takeaway:account' user.username %}">Account info</a>
                         <a class="dropdown-item" href="">Orders</a>
-                        <a class="dropdown-item" href="">Logout</a>
+                        <a class="dropdown-item" href="{% url 'auth_logout' %}?next={% url 'takeaway:index'%}">Logout</a>
                     </div>
                 </li>
                 {% else %}
