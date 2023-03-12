@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from takeaway import views
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", views.IndexView.as_view(), name="index"),
     path("takeaway/", include("takeaway.urls")),
     path("admin/", admin.site.urls),
     path('accounts/', include('registration.backends.simple.urls')),

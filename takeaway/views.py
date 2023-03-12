@@ -16,23 +16,18 @@ from django.views import View
 from takeaway.models import Food, UserProfile, Wallet
 
 
-def index(request):
-    # Query the database for a list of ALL foods currently stored.
-    food_list = Food.objects.all()
+class IndexView(View):
+    def get(self, request):
+        # Query the database for a list of ALL foods currently stored.
+        food_list = Food.objects.all()
 
-    context_dict = {}
-    context_dict['foods'] = food_list
+        context_dict = {'foods': food_list[1:],
+                        'special_food': food_list[0]}
 
-    # Return a rendered response to send to the client.
-    # We make use of the shortcut function to make our lives easier.
-    # Note that the first parameter is the template we wish to use.
-    return render(request, 'takeaway/index.html', context=context_dict)
-
-
-@login_required
-def user_logout(request):
-    logout(request)
-    return redirect(reverse('takeaway:index'))
+        # Return a rendered response to send to the client.
+        # We make use of the shortcut function to make our lives easier.
+        # Note that the first parameter is the template we wish to use.
+        return render(request, 'takeaway/index.html', context=context_dict)
 
 
 class AccountView(View):
@@ -62,9 +57,3 @@ class AccountView(View):
                         'wallet': wallet,
                         }
         return render(request, 'takeaway/account.html', context_dict)
-
-
-# @login_required
-# def user_logout(request):
-#     logout(request)
-#     return redirect(reverse('takeaway:index'))

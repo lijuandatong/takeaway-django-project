@@ -91,6 +91,24 @@
         </div>
     </section>
 
+    <section class="container">
+        <div class="border">
+            <div class="d-flex flex-row align-items-center">
+                <div class="col-6">
+                    <img class="col" src="{{ MEDIA_URL }}{{ special_food.picture }}">
+                </div>
+                <div class="col-6 heading-section ftco-animate deal-of-the-day ftco-animate">
+                    <h3 class="subheading">Best Price For You</h3>
+                    <h2 class="mb-4">Deal of the day</h2>
+                    <h4><a href="#">{{ special_food.title }}</a></h4>
+                    <p><span class="mr-2 price-dc">￡{{ special_food.price }}</span><span class="price-sale">now ￡{{ special_food.discounted_price }} only</span></p>
+{#                    <span class="price">$15 <a href="#">now $10 only</a></span>#}
+                    <p><a href="#" class="btn btn-primary">View Details</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="ftco-section">
         <div class="container">
             <div class="row justify-content-center mb-3 pb-3">
@@ -117,19 +135,10 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class="bottom-area d-flex px-3">
-                                <div class="m-auto d-flex">
-                                    <a href="#"
-                                       class="add-to-cart d-flex justify-content-center align-items-center text-center">
-                                        <span><i class="ion-ios-menu"></i></span>
-                                    </a>
-                                    <a href="#" class="buy-now d-flex justify-content-center align-items-center mx-1">
+                            <div class="bottom-area d-flex justify-content-end px-3">
+                                <a href="#" class="buy-now d-flex  justify-content-center align-items-center mx-1">
                                         <span><i class="ion-ios-cart"></i></span>
-                                    </a>
-                                    <a href="#" class="heart d-flex justify-content-center align-items-center ">
-                                        <span><i class="ion-ios-heart"></i></span>
-                                    </a>
-                                </div>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -139,37 +148,4 @@
         </div>
     </section>
 
-    <section style="background-color:white; height: auto; padding: 20px 20px;">
-        <div class="container">
-            <div class="d-flex flex-row justify-content-start">
-                <div class="col">
-                    <img src="{% static 'images/special_food.jpeg' %}">
-                </div>
-                <div class="col heading-section ftco-animate deal-of-the-day ftco-animate">
-                    <h3 class="subheading">Best Price For You</h3>
-                    <h2 class="mb-4">Deal of the day</h2>
-                    <h4><a href="#">Chinese Red Braised Pork</a></h4>
-                    <p><span class="mr-2 price-dc">￡15</span><span class="price-sale">now ￡10 only</span></p>
-{#                    <span class="price">$15 <a href="#">now $10 only</a></span>#}
-                    <p><a href="#" class="btn btn-primary">View Details</a></p>
-                </div>
-            </div>
-        </div>
-    </section>
-{% endblock %}
-
-{% block script_block %}
-<script>
-    $(document).ready(function () {
-        $('.input-rating').rating({
-            displayOnly: true,
-            showCaption: false,
-            showCaptionAsTitle: true,
-            starCaptions: function (val) {
-                // bug
-                    return $(this).attr('value') + 'out of 5';
-                },
-        });
-    });
-</script>
 {% endblock %}
