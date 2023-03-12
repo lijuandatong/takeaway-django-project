@@ -8,3 +8,6 @@ Put related ajax code in this file, don't put ajax code in html file.
 
 3.css
 The related style need to be added to a sperated css file, don't put in html file.
+
+4.base.html
+Every template should extend this html.
