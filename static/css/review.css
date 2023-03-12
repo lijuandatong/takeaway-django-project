@@ -1,0 +1,107 @@
+            .order {
+                width:600px;
+                margin:auto;
+                background-color: #f9f9f9;
+                padding: 20px;
+                margin-bottom: 20px;
+                border-radius: 5px;
+            }
+
+            .order h2 {
+                margin-top: 0;
+                margin-bottom: 10px;
+            }
+
+            .order .order-info {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+            }
+
+            .order .order-info > div {
+                flex-basis: 33%;
+                margin-bottom: 10px;
+            }
+
+            .order .order-info .order-id {
+                font-weight: bold;
+                text-align: left;
+            }
+
+            .order .order-info .user-name {
+                text-align: center;
+            }
+
+            .order .order-info .order-date {
+                text-align: center;
+            }
+
+            .order .order-info .order-status {
+                text-align: right;
+            }
+
+            .order .order-info .status {
+                padding: 5px 10px;
+                border-radius: 20px;
+                font-weight: bold;
+                color: #fff;
+            }
+
+            .order .order-info .status-delivered {
+                background-color: #4CAF50;
+            }
+
+            .order .order-info .status-pending {
+                background-color: #f44336;
+            }
+
+            .order .order-info .status-shipped {
+                background-color: #2196F3;
+            }
+
+            .order .food-list {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                padding-top: 10px;
+                border-top: 1px solid #ddd;
+                margin-top: 10px;
+                justify-content: space-between;
+            }
+
+            .order .food-list > div {
+                flex-basis: 33%;
+                margin-bottom: 10px;
+            }
+
+            .order .food-list .food-name {
+                font-weight: bold;
+                color: orange
+            }
+
+            .order .food-list .food-review {
+                text-align: center;
+            }
+
+            .order .food-list .food-review .text {
+                height: 80;
+            }
+
+            .order .food-list .food-review-submit {
+                text-align: center;
+            }
+
+            .order .order-details {
+                padding-top: 10px;
+                border-top: 1px solid #ddd;
+                margin-top: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .order .order-details p {
+                margin:auto;
+                text-decoration: none;
+                font-weight: bold;
+            }
