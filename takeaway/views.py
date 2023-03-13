@@ -28,6 +28,11 @@ class IndexView(View):
         # We make use of the shortcut function to make our lives easier.
         # Note that the first parameter is the template we wish to use.
         return render(request, 'takeaway/index.html', context=context_dict)
+    
+    def product(request):
+        context_dict = {}
+        context_dict['boldmessage'] = 'product!'
+        return render(request, 'takeaway/product.html', context=context_dict)
 
 
 class AccountView(View):
