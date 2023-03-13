@@ -36,15 +36,11 @@ class IndexView(View):
         # Note that the first parameter is the template we wish to use.
         return render(request, 'takeaway/index.html', context=context_dict)
 
-    def product(request):
-        context_dict = {}
-        context_dict['boldmessage'] = 'product!'
-        return render(request, 'takeaway/product.html', context=context_dict)
-
 
 class AccountView(View):
 
     def get_user_details(self, username):
+        print('get detials 函数进入')
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
@@ -57,6 +53,7 @@ class AccountView(View):
 
     @method_decorator(login_required)
     def get(self, request, username):
+        print('get函数进入')
         try:
             (user, user_profile, wallet) = self.get_user_details(username)
         except TypeError:
@@ -67,6 +64,14 @@ class AccountView(View):
                         'wallet': wallet,
                         }
         return render(request, 'takeaway/account.html', context_dict)
+
+
+def user_order_history(request):
+    return render(request, 'takeaway/order_history.html')
+
+
+def user_order_review(request):
+    return render(request, 'takeaway/review.html')
 
 
 class ChargeView(View):
@@ -132,3 +137,8 @@ def getCartCount(user):
         cart_count += cart_detail.count
 
     return cart_count
+
+
+def product(request):
+    context_dict = {'bold message': 'product!'}
+    return render(request, 'takeaway/product.html', context=context_dict)
