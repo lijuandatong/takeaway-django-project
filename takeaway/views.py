@@ -57,3 +57,11 @@ class AccountView(View):
                         'wallet': wallet,
                         }
         return render(request, 'takeaway/account.html', context_dict)
+
+
+def user_order_history(request):
+    return render(request, 'takeaway/order_history.html')
+
+
+def user_order_review(request):
+    return render(request, 'takeaway/review.html')
