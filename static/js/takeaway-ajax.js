@@ -17,4 +17,9 @@ $(document).ready(function () {
         // dismiss dialog
         $('#chargeModal').modal('hide')
     });
+
+    $('.icon-shopping_cart').click(function () {
+
+
+    })
 });
