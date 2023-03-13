@@ -63,7 +63,7 @@ class Comment(models.Model):
 
 
 class Cart(models.Model):
-    cart_id = models.CharField(max_length=30, unique=True)
+    cart_id = models.AutoField(primary_key=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):

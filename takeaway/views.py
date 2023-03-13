@@ -13,22 +13,29 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 
-from takeaway.models import Food, UserProfile, Wallet
+from takeaway.models import Food, UserProfile, Wallet, Cart, CartDetail
 
 
 class IndexView(View):
     def get(self, request):
+        cart_count = 0
+
+        if request.user.is_authenticated:
+            print("用户登录了")
+            cart_count = getCartCount(request.user)
+
         # Query the database for a list of ALL foods currently stored.
         food_list = Food.objects.all()
 
         context_dict = {'foods': food_list[1:],
-                        'special_food': food_list[0]}
+                        'special_food': food_list[0],
+                        'cart_count': cart_count}
 
         # Return a rendered response to send to the client.
         # We make use of the shortcut function to make our lives easier.
         # Note that the first parameter is the template we wish to use.
         return render(request, 'takeaway/index.html', context=context_dict)
-    
+
     def product(request):
         context_dict = {}
         context_dict['boldmessage'] = 'product!'
@@ -77,3 +84,51 @@ class ChargeView(View):
         wallet.save()
 
         return HttpResponse(wallet.cash)
+
+
+class AddCartView(View):
+    def get(self, request):
+        username = request.GET['username']
+        food_id = request.GET['food_id']
+        count = request.GET['count']
+        if count is None:
+            count = 1
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
+        try:
+            food = Food.objects.get(food_id=food_id)
+        except Food.DoesNotExist:
+            return None
+
+        cart = Cart.objects.get_or_create(user=user)[0]
+        cart.save()
+
+        cart_detail = CartDetail.objects.get_or_create(cart=cart, food=food)[0]
+        cart_detail.count = cart_detail.count + int(count)
+        cart_detail.save()
+
+        cart_detail_list = CartDetail.objects.filter(cart=cart)
+        total_count = 0
+        for cart_detail in cart_detail_list:
+            total_count += cart_detail.count
+
+        return HttpResponse(str(total_count))
+
+
+def getCartCount(user):
+    cart_count = 0
+
+    try:
+        cart = Cart.objects.get(user=user)
+    except Cart.DoesNotExist:
+        return cart_count
+
+    cart_detail_list = CartDetail.objects.filter(cart=cart)
+    for cart_detail in cart_detail_list:
+        cart_count += cart_detail.count
+
+    return cart_count
