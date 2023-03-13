@@ -65,3 +65,8 @@ def user_order_history(request):
 
 def user_order_review(request):
     return render(request, 'takeaway/review.html')
+
+
+def product(request):
+    context_dict = {'bold message': 'product!'}
+    return render(request, 'takeaway/product.html', context=context_dict)
