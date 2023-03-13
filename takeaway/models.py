@@ -62,9 +62,18 @@ class Comment(models.Model):
         return self.user.username
 
 
-class Basket(models.Model):
+class Cart(models.Model):
+    cart_id = models.CharField(max_length=30, unique=True)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    food_ids = models.CharField(max_length=300)
 
     def __str__(self):
         return self.user.username
+
+
+class CartDetail(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    count = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.cart.cart_id
