@@ -142,3 +142,16 @@ def getCartCount(user):
 def product(request):
     context_dict = {'bold message': 'product!'}
     return render(request, 'takeaway/product.html', context=context_dict)
+
+
+def user_checkout(request):
+    context_dict = {}
+    context_dict['boldmessage'] = 'checkout page!'
+
+    return render(request, 'takeaway/checkout.html', context=context_dict)
+
+def user_cart(request):
+    context_dict = {}
+    context_dict['boldmessage'] = 'cart page!'
+
+    return render(request, 'takeaway/cart.html', context=context_dict)
