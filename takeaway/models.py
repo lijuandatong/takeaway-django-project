@@ -89,4 +89,4 @@ class CartDetail(models.Model):
     count = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.cart.cart_id
+        return str(self.cart.cart_id)
