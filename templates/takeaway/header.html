@@ -39,7 +39,7 @@
                        aria-haspopup="true" aria-expanded="false">Hello, {{ user.username }}</a>
                     <div class="dropdown-menu" aria-labelledby="dropdown04">
                         <a class="dropdown-item" href="{% url 'takeaway:account' user.username %}">Account info</a>
-                        <a class="dropdown-item" href="{% url 'takeaway:order_history'%}">Orders</a>
+                        <a class="dropdown-item" href="{% url 'takeaway:order_history' user.username %}">Orders</a>
                         <a class="dropdown-item" href="{% url 'auth_logout' %}?next={% url 'takeaway:index'%}">Logout</a>
                     </div>
                 </li>

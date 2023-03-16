@@ -13,7 +13,8 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 
-from takeaway.models import Food, UserProfile, Wallet, Cart, CartDetail
+from takeaway.models import Food, UserProfile, Wallet, Cart, CartDetail, Order, OrderDetail, Comment
+import sqlite3
 
 
 class IndexView(View):
@@ -66,12 +67,82 @@ class AccountView(View):
         return render(request, 'takeaway/account.html', context_dict)
 
 
-def user_order_history(request):
-    return render(request, 'takeaway/order_history.html')
+class OrderView(View):
+
+    def get_order(self, username):
+        print('get detials 函数进入')
+        try:
+            user = User.objects.get(username=username)
+            order = Order.objects.filter(user=user)
+            # orderdetail = []
+            # for i in len(order):
+            #     orderdetail.append(OrderDetail.objects.filter(order=order[i]))
+            # orderdetail = OrderDetail.objects.filter(order=order[1])
+            orderdetail = OrderDetail.objects.all()
+        except User.DoesNotExist:
+            return None
+        except Order.DoesNotExist:
+            return None
+        except OrderDetail.DoesNotExist:
+            return None
+
+        return user, order, orderdetail
+
+    @method_decorator(login_required)
+    def get(self, request, username):
+        print('get函数进入')
+        try:
+            (user, order, orderdetail) = self.get_order(username)
+        except TypeError:
+            return redirect(reverse('takeaway:index'))
+
+        context_dict = {'user': user,
+                        'orders': order[:],
+                        'orderdetails': orderdetail[:],
+                        }
+        return render(request, 'takeaway/order_history.html', context_dict)
 
 
-def user_order_review(request):
-    return render(request, 'takeaway/review.html')
+class OrderDetailsView(View):
+
+    def get_order_details(self, order_id):
+        print('get detials 函数进入')
+
+        try:
+            order = Order.objects.get(order_id=order_id)
+            orderdetail = OrderDetail.objects.filter(order=order)
+        except Order.DoesNotExist:
+            return None
+        except OrderDetail.DoesNotExist:
+            return None
+
+        return order, orderdetail
+
+    @method_decorator(login_required)
+    def get(self, request, order_id):
+        print('get函数进入')
+        try:
+            (order, orderdetail) = self.get_order_details(order_id)
+        except TypeError:
+            return redirect(reverse('takeaway:index'))
+
+        context_dict = {'order': order,
+                        'orderdetails': orderdetail[:],
+                        }
+        return render(request, 'takeaway/review.html', context_dict)
+
+
+def AddComment(request):
+    if request.method == 'POST':
+        form = Comment(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.user = request.user
+            comment.save()
+            return redirect('takeaway/review.html', pk=comment.article.pk)
+    else:
+        form = Comment()
+    return render(request, 'takeaway/review.html', {'form': form})
 
 
 class ChargeView(View):
@@ -149,6 +220,7 @@ def user_checkout(request):
     context_dict['boldmessage'] = 'checkout page!'
 
     return render(request, 'takeaway/checkout.html', context=context_dict)
+
 
 def user_cart(request):
     context_dict = {}

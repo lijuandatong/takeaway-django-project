@@ -2,83 +2,48 @@
 {% load static %}
 
 {% block title_block %}
-    history
+history
 {% endblock %}
 
 {% block body_block %}
 
 <link href="{% static 'css/history-order.css' %}" rel="stylesheet">
 <div class="container">
-        <div class="p-4">
-            <div class="container" style="text-align: center;">
-                <h1 >Order History</h1>
+    <div class="p-4">
+        <div class="container" style="text-align: center;">
+            <h1>Order History</h1>
+        </div>
+    </div>
+
+    <section class="ftco-section">
+        {% for order in orders %}
+        <div class="order">
+            <h2><a href="{% url 'takeaway:review' order.order_id%}">Order #{{ order.order_id }}</a></h2>
+            <div class="order-info">
+                <div class="order-id">Order ID: {{ order.order_id }}</div>
+                <div class="order-date">Date: {{ order.date }}</div>
+                <div class="order-status">
+                    Status: <span class="status status-delivered">{{ order.delivery_state }}</span>
+                </div>
+            </div>
+
+            <div class="order-content">
+                {% for orderdetail in orderdetails %}
+                    {{ orderdetail.food }} x {{ orderdetail.count }} &nbsp;&nbsp;&nbsp;&nbsp;
+                {% endfor %}
+            </div>
+
+            <div class="order-details">
+                <div>
+                    <a href="{% url 'takeaway:review' order.order_id%}">Review</a>
+                </div>
+                <div>
+                    Total: {{ order.payment }}
+                </div>
             </div>
         </div>
-		<div class="order" >
-            <h2 ><a href="{% url 'takeaway:review' %}">Order #12345</a></h2>
-			<div class="order-info">
-				<div class="order-id">Order ID: 12345</div>
-				<div class="order-date">Date: March 10, 2023</div>
-				<div class="order-status">
-					Status: <span class="status status-delivered">Delivered</span>
-				</div>
-			</div>
-            <div class="order-content">
-				Burger x 1, Pasta x 2, Cola x 2
-			</div>
-			<div class="order-details">
-				<div>
-					<a href="{% url 'takeaway:review' %}">Review</a>
-				</div>
-				<div>
-					Total: 20￡ + 300 points
-				</div>
-			</div>
-		</div>
+        {% endfor %}
+    </section>
 
-		<div class="order">
-			<h2><a href="{% url 'takeaway:review' %}">Order #12346</a></h2>
-			<div class="order-info">
-				<div class="order-id">Order ID: 12346</div>
-				<div class="order-date">Date: March 9, 2023</div>
-				<div class="order-status">
-					Status: <span class="status status-delivered">Delivered</span>
-				</div>
-			</div>
-            <div class="order-content">
-				Burger x 1, Pasta x 2, Cola x 2
-			</div>
-			<div class="order-details">
-				<div>
-					<a href="{% url 'takeaway:review' %}">Review</a>
-				</div>
-				<div>
-					Total: 40￡ + 150 points
-				</div>
-			</div>
-		</div>
-
-        <div class="order">
-			<h2><a href="{% url 'takeaway:review' %}">Order #12347</a></h2>
-			<div class="order-info">
-				<div class="order-id">Order ID: 12347</div>
-				<div class="order-date">Date: March 11, 2023</div>
-				<div class="order-status">
-					Status: <span class="status status-delivered">Delivered</span>
-				</div>
-			</div>
-            <div class="order-content">
-				Burger x 1, Pasta x 2, Cola x 2
-			</div>
-			<div class="order-details">
-				<div>
-					<a href="{% url 'takeaway:review' %}">Review</a>
-				</div>
-				<div>
-					Total: 30￡ + 260 points
-				</div>
-			</div>
-		</div>
-	</div>
-
+</div>
 {% endblock %}

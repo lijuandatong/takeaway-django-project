@@ -2,47 +2,43 @@
 {% load static %}
 
 {% block title_block %}
-    history
+history
 {% endblock %}
 
 {% block body_block %}
 
 <link href="{% static 'css/review.css' %}" rel="stylesheet">
 <div class="container">
-        <div class="p-4">
-            <div class="container" style="text-align: center;">
-                <h1 >Order Review</h1>
+    <div class="p-4">
+        <div class="container" style="text-align: center;">
+            <h1>Order Review</h1>
+        </div>
+    </div>
+    <section class="ftco-section">
+        <div class="order">
+            <h2><a href="#">Order #{{ order.order_id }}</a></h2>
+            <div class="order-info">
+                <div class="order-id">Order ID: {{ order.order_id }}</div>
+                <div class="order-date">Date: {{ order.date }}</div>
+                <div class="order-status">
+                    Status: <span class="status status-delivered">{{ order.delivery_state }}</span>
+                </div>
+            </div>
+
+            {% for orderdetail in orderdetails %}
+            <form class="addc" action="addComment" method="post">
+                <div class="food-list">
+                    <div class="food-name">{{ orderdetail.food }}</div>
+                    <div class="food-review"><textarea class='text' name='1' rows='2' clos='20'></textarea></div>
+                    <div class="food-review-submit"><input type="submit" name="" value="submit"/></div>
+                </div>
+            </form>
+            {% endfor %}
+            <div class="order-details">
+                <p><a href="{% url 'takeaway:order_history' user.username %}" class="btn btn-primary">back</a></p>
             </div>
         </div>
-		<div class="order" >
-            <h2 ><a href="{% url 'takeaway:review' %}">Order #12345</a></h2>
-			<div class="order-info">
-				<div class="order-id">Order ID: 12345</div>
-				<div class="order-date">Date: March 10, 2023</div>
-				<div class="order-status">
-					Status: <span class="status status-delivered">Delivered</span>
-				</div>
-			</div>
-            <div class="food-list">
-				<div class="food-name">Burger</div>
-				<div class="food-review"><textarea class = 'text' name = '1' rows = '2' clos = '20'></textarea></div>
-                <div class="food-review-submit"><input type="submit" name="" value="submit" /></div>
-			</div>
-            <div class="food-list">
-				<div class="food-name">Pasta</div>
-				<div class="food-review"><textarea class = 'text' name = '1' rows = '2' clos = '20'></textarea></div>
-                <div class="food-review-submit"><input type="submit" name="" value="submit" /></div>
-			</div>
-            <div class="food-list">
-				<div class="food-name">Cola</div>
-				<div class="food-review"><textarea class = 'text' name = '1' rows = '2' clos = '20'></textarea></div>
-                <div class="food-review-submit"><input type="submit" name="" value="submit" /></div>
-			</div>
-			<div class="order-details">
-                 <p><a href="{% url 'takeaway:order_history' %}" class="btn btn-primary">back</a></p>
-			</div>
-		</div>
-
+        <section class="ftco-section">
 </div>
 
 {% endblock %}
