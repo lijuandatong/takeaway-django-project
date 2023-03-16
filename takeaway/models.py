@@ -45,6 +45,7 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment = models.CharField(max_length=100)
     delivery_state = models.CharField(max_length=10)
+    date = models.DateField()
 
     def __str__(self):
         return self.order_id
@@ -53,8 +54,10 @@ class Order(models.Model):
 class OrderDetail(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    count = models.IntegerField(default=0)
     payment = models.CharField(max_length=100)
     delivery_state = models.CharField(max_length=10)
+    date = models.DateField()
 
     def __str__(self):
         return self.order.order_id
