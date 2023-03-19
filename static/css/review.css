@@ -76,14 +76,14 @@
 
             .order .food-list .food-name {
                 font-weight: bold;
-                color: orange
+                color: black;
             }
 
-            .order .food-list .food-review {
+            .order .food-list .food-count {
                 text-align: center;
             }
 
-            .order .food-list .food-review .text {
+            .order .food-list .food-count .text {
                 height: 80;
             }
 
@@ -98,10 +98,4 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-            }
-
-            .order .order-details p {
-                margin:auto;
-                text-decoration: none;
-                font-weight: bold;
             }

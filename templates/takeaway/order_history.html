@@ -18,7 +18,7 @@ history
     <section class="ftco-section">
         {% for order in orders %}
         <div class="order">
-            <h2><a href="{% url 'takeaway:review' order.order_id%}">Order #{{ order.order_id }}</a></h2>
+            <h2><a href="{% url 'takeaway:orderdetail' order.order_id%}">Order #{{ order.order_id }}</a></h2>
             <div class="order-info">
                 <div class="order-id">Order ID: {{ order.order_id }}</div>
                 <div class="order-date">Date: {{ order.date }}</div>
@@ -27,15 +27,11 @@ history
                 </div>
             </div>
 
-            <div class="order-content">
-                {% for orderdetail in orderdetails %}
-                    {{ orderdetail.food }} x {{ orderdetail.count }} &nbsp;&nbsp;&nbsp;&nbsp;
-                {% endfor %}
-            </div>
+
 
             <div class="order-details">
                 <div>
-                    <a href="{% url 'takeaway:review' order.order_id%}">Review</a>
+                    <a href="{% url 'takeaway:orderdetail' order.order_id%}">View order Details</a>
                 </div>
                 <div>
                     Total: {{ order.payment }}

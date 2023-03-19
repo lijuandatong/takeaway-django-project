@@ -11,7 +11,7 @@ history
 <div class="container">
     <div class="p-4">
         <div class="container" style="text-align: center;">
-            <h1>Order Review</h1>
+            <h1>Order Details</h1>
         </div>
     </div>
     <section class="ftco-section">
@@ -26,19 +26,44 @@ history
             </div>
 
             {% for orderdetail in orderdetails %}
-            <form class="addc" action="addComment" method="post">
-                <div class="food-list">
-                    <div class="food-name">{{ orderdetail.food }}</div>
-                    <div class="food-review"><textarea class='text' name='1' rows='2' clos='20'></textarea></div>
-                    <div class="food-review-submit"><input type="submit" name="" value="submit"/></div>
-                </div>
-            </form>
+            <div class="food-list">
+                <div class="food-name">{{ orderdetail.food }}</div>
+                <div class="food-count">x {{ orderdetail.count }}</div>
+                <div class="food-review-submit"><p class="btn btn-primary" data-toggle="modal"
+                                                   data-target="#{{orderdetail}}">Review</p></div>
+            </div>
             {% endfor %}
             <div class="order-details">
-                <p><a href="{% url 'takeaway:order_history' user.username %}" class="btn btn-primary">back</a></p>
+                <div class="Total">
+                    Total: {{ order.payment }}
+                </div>
             </div>
         </div>
-        <section class="ftco-section">
+    </section>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="{{orderdetail}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label class="required" for="id_review">Could you please give us the feedback?</label>
+                <input type="text" name="inputReview" value="{{ reviewModal.ir }}" id="id_review" class="form-control" placeholder="" required
+                       autofocus>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" value="{{ reviewModal.af }}" id="btn_review" data-username="{{ user.username }}">
+                    Feedback
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

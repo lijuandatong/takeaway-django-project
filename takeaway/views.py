@@ -132,17 +132,22 @@ class OrderDetailsView(View):
         return render(request, 'takeaway/review.html', context_dict)
 
 
-def AddComment(request):
-    if request.method == 'POST':
-        form = Comment(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.save()
-            return redirect('takeaway/review.html', pk=comment.article.pk)
-    else:
-        form = Comment()
-    return render(request, 'takeaway/review.html', {'form': form})
+class ReviewView(View):
+    def get(self, request):
+        print(123)
+        username = request.GET['username']
+        feedback = request.GET["feedback"]
+
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
+        review = Comment.objects.get_or_createfilter(user=user)[0]
+        review.comment = feedback
+        review.save()
+
+        return HttpResponse(review.comment)
 
 
 class ChargeView(View):
