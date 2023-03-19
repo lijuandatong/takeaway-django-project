@@ -46,7 +46,16 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment = models.CharField(max_length=100)
     delivery_state = models.CharField(max_length=10)
-    date = models.DateField(default=timezone.now())
+    date = models.DateTimeField(default=timezone.now())
+
+    # the information of recipient
+    first_name = models.CharField(max_length=50, default="")
+    last_name = models.CharField(max_length=50, default="")
+    address = models.CharField(max_length=200, default="")
+    city = models.CharField(max_length=50, default="")
+    zipcode = models.CharField(max_length=10, default="")
+    email = models.EmailField(max_length=50, default="")
+    phone = models.CharField(max_length=15, default="")
 
     def __str__(self):
         return str(self.order_id)
@@ -58,7 +67,7 @@ class OrderDetail(models.Model):
     count = models.IntegerField(default=0)
     payment = models.CharField(max_length=100)
     delivery_state = models.CharField(max_length=10)
-    date = models.DateField(default=timezone.now())
+    date = models.DateTimeField(default=timezone.now())
 
     def __str__(self):
         return str(self.order.order_id)
@@ -66,7 +75,7 @@ class OrderDetail(models.Model):
 
 class Comment(models.Model):
     comment = models.CharField(max_length=200)
-    date = models.DateField()
+    date = models.DateTimeField(default=timezone.now())
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     back_points = models.IntegerField(default=0)

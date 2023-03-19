@@ -26,14 +26,14 @@
 	          	<div class="row align-items-end">
 	          		<div class="col-md-6">
 	                <div class="form-group">
-	                	<label for="firstname">Firt Name</label>
-	                  <input type="text" class="form-control" placeholder="">
+                        <label for="firstname">Firt Name</label>
+	                    <input type="text" id="id_checkout_firstname" class="form-control" placeholder="" required autofocus>
 	                </div>
 	              </div>
 	              <div class="col-md-6">
 	                <div class="form-group">
 	                	<label for="lastname">Last Name</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                  <input type="text" class="form-control" placeholder="" id="id_checkout_lastname">
 	                </div>
                 </div>
                 
@@ -41,7 +41,7 @@
 		            <div class="col-md-6">
 		            	<div class="form-group">
 	                	<label for="streetaddress">Street Address</label>
-	                  <input type="text" class="form-control" placeholder="House number and street name">
+	                  <input type="text" class="form-control" placeholder="House number and street name" id="id_checkout_address">
 	                </div>
 		            </div>
 		            
@@ -49,26 +49,26 @@
 		            <div class="col-md-6">
 		            	<div class="form-group">
 	                	<label for="towncity">Town / City</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                  <input type="text" class="form-control" placeholder="" id="id_checkout_city">
 	                </div>
 		            </div>
 		            <div class="col-md-6">
 		            	<div class="form-group">
 		            		<label for="postcodezip">Postcode / ZIP *</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                  <input type="text" class="form-control" placeholder="" id="id_checkout_postcode">
 	                </div>
 		            </div>
 		            <div class="w-100"></div>
 		            <div class="col-md-6">
 	                <div class="form-group">
 	                	<label for="phone">Phone</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                  <input type="text" class="form-control" placeholder="" id="id_checkout_phone">
 	                </div>
 	              </div>
 	              <div class="col-md-6">
 	                <div class="form-group">
 	                	<label for="emailaddress">Email Address</label>
-	                  <input type="text" class="form-control" placeholder="">
+	                  <input type="text" class="form-control" placeholder="" id="id_checkout_email">
 	                </div>
                 </div>
                 <div class="w-100"></div>
@@ -125,7 +125,7 @@
 									
 									<div class="modal-footer">
 										
-										<button type="button" class="btn btn-primary" id="checkout-form"  data-first_name="{{ checkout.first_name }}" data-last_name="{{ checkout.last_name }}"  data-address="{{ checkout.address }}" data-city="{{ checkout.city }}" data-zipcode="{{ checkout.zipcode }}"  data-email="{{ checkout.email }}"  data-phone="{{ checkout.phone }}" >Place Order</button>
+										<button type="button" class="btn btn-primary" id="checkout-form">Place Order</button>
 									  </div>
 								</div>
 	          	</div>

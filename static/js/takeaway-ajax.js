@@ -29,18 +29,19 @@ $(document).ready(function () {
                   $('#id_cart').html(`<span class="icon-shopping_cart"></span>[${data}]`);
               })
 
-    })
+    });
 
     $('#checkout-form').click(function () {
-          
-            var first_name = $(this).attr('data-first_name');
-            var last_name = $(this).attr('data-last_name');
-            var address = $(this).attr(' data-address');
-            var city = $(this).attr('data-city');
-            var zipcode = $(this).attr('data-zipcode');
-            var email = $(this).attr('data-email');
-            var phone = $(this).attr('data-phone');
 
+            var first_name = $('#id_checkout_firstname').val();
+
+            alert("first_name的值为：" + first_name);
+            var last_name = $('#id_checkout_lastname').val();
+            var address = $('#id_checkout_address').val();
+            var city = $('#id_checkout_city').val();
+            var zipcode = $('#id_checkout_postcode').val();
+            var email = $('#id_checkout_email').val();
+            var phone = $('#id_checkout_phone').val();
 
             $.get('/takeaway/checkout_save_data',
               {'first_name':first_name, 'last_name':last_name,
