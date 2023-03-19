@@ -50,7 +50,7 @@ class Order(models.Model):
 
     first_name = models.CharField(max_length=50, default="")
     last_name = models.CharField(max_length=50, default="")
-    address = models.CharField(max_length=200,
+    address = models.CharField(max_length=200, default="")
     # the information of recipie default="")
     city = models.CharField(max_length=50, default="")
     zipcode = models.CharField(max_length=10, default="")
