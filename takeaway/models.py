@@ -48,10 +48,10 @@ class Order(models.Model):
     delivery_state = models.CharField(max_length=10)
     date = models.DateTimeField(default=timezone.now())
 
-    # the information of recipient
     first_name = models.CharField(max_length=50, default="")
     last_name = models.CharField(max_length=50, default="")
-    address = models.CharField(max_length=200, default="")
+    address = models.CharField(max_length=200,
+    # the information of recipie default="")
     city = models.CharField(max_length=50, default="")
     zipcode = models.CharField(max_length=10, default="")
     email = models.EmailField(max_length=50, default="")

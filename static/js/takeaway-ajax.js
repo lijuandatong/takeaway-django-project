@@ -33,8 +33,6 @@ $(document).ready(function () {
 
     $('#checkout-form').click(function () {
             var first_name = $('#id_checkout_firstname').val();
-
-            alert("first_name的值为：" + first_name);
             var last_name = $('#id_checkout_lastname').val();
             var address = $('#id_checkout_address').val();
             var city = $('#id_checkout_city').val();
