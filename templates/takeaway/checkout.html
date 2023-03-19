@@ -36,23 +36,7 @@
 	                  <input type="text" class="form-control" placeholder="">
 	                </div>
                 </div>
-                <div class="w-100"></div>
-		            <div class="col-md-12">
-		            	<div class="form-group">
-		            		<label for="country">State / Country</label>
-		            		<div class="select-wrap">
-		                  <div class="icon"><span class="ion-ios-arrow-down"></span></div>
-		                  <select name="" id="" class="form-control">
-		                  	<option value="">France</option>
-		                    <option value="">Italy</option>
-		                    <option value="">Philippines</option>
-		                    <option value="">South Korea</option>
-		                    <option value="">Hongkong</option>
-		                    <option value="">Japan</option>
-		                  </select>
-		                </div>
-		            	</div>
-		            </div>
+                
 		            <div class="w-100"></div>
 		            <div class="col-md-6">
 		            	<div class="form-group">
@@ -60,11 +44,7 @@
 	                  <input type="text" class="form-control" placeholder="House number and street name">
 	                </div>
 		            </div>
-		            <div class="col-md-6">
-		            	<div class="form-group">
-	                  <input type="text" class="form-control" placeholder="Appartment, suite, unit etc: (optional)">
-	                </div>
-		            </div>
+		            
 		            <div class="w-100"></div>
 		            <div class="col-md-6">
 		            	<div class="form-group">
@@ -143,7 +123,10 @@
 									</div>
 									
 									
-									<p><a href="#"class="btn btn-primary py-3 px-4">Place an order</a></p>
+									<div class="modal-footer">
+										
+										<button type="button" class="btn btn-primary" id="checkout-form"  data-first_name="{{ checkout.first_name }}" data-last_name="{{ checkout.last_name }}"  data-address="{{ checkout.address }}" data-city="{{ checkout.city }}" data-zipcode="{{ checkout.zipcode }}"  data-email="{{ checkout.email }}"  data-phone="{{ checkout.phone }}" >Place Order</button>
+									  </div>
 								</div>
 	          	</div>
 	          </div>

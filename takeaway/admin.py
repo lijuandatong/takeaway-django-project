@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from takeaway.models import UserProfile, Food, Wallet, Order, Comment, Cart, CartDetail, OrderDetail
+from takeaway.models import UserProfile, Food, Wallet, Order, Comment, Cart, CartDetail, OrderDetail,Checkout
 
 # Register your models here.
 
@@ -12,3 +12,4 @@ admin.site.register(OrderDetail)
 admin.site.register(Comment)
 admin.site.register(Cart)
 admin.site.register(CartDetail)
+admin.site.register(Checkout)

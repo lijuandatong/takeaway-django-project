@@ -90,3 +90,17 @@ class CartDetail(models.Model):
 
     def __str__(self):
         return str(self.cart.cart_id)
+
+
+class Checkout(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    address = models.CharField(max_length=200)
+    city = models.CharField(max_length=50)
+    zipcode = models.CharField(max_length=10)
+    email = models.EmailField()
+    phone = models.CharField(max_length=15)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.first_name

@@ -30,4 +30,43 @@ $(document).ready(function () {
               })
 
     })
+
+    $('#checkout-form').click(function () {
+          
+            var first_name = $(this).attr('data-first_name');
+            var last_name = $(this).attr('data-last_name');
+            var address = $(this).attr(' data-address');
+            var city = $(this).attr('data-city');
+            var zipcode = $(this).attr('data-zipcode');
+            var email = $(this).attr('data-email');
+            var phone = $(this).attr('data-phone');
+
+
+            $.get('/takeaway/checkout_save_data',
+              {'first_name':first_name, 'last_name':last_name,
+              'address':address, 'city':city,
+              'zipcode':zipcode, 'email':email,
+              'phone':phone},
+              function(response) {
+                if (response.success) {
+                    alert('Order placed successfully!');
+                } else {
+                    alert('There was an error with your order. Please check the form and try again.');
+                }
+            })
+        });
+
+
+
+    
 });
+
+
+
+    
+        
+
+ 
+    
+            
+
