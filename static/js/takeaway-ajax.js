@@ -50,5 +50,42 @@ $(document).ready(function () {
                   $('#id_cart').html(`<span class="icon-shopping_cart"></span>[${data}]`);
               })
 
-    })
+    });
+
+    $('#checkout-form').click(function () {
+            var first_name = $('#id_checkout_firstname').val();
+            var last_name = $('#id_checkout_lastname').val();
+            var address = $('#id_checkout_address').val();
+            var city = $('#id_checkout_city').val();
+            var zipcode = $('#id_checkout_postcode').val();
+            var email = $('#id_checkout_email').val();
+            var phone = $('#id_checkout_phone').val();
+
+            $.get('/takeaway/checkout_save_data',
+              {'first_name':first_name, 'last_name':last_name,
+                'city':city,
+              'zipcode':zipcode, 'email':email,
+              'phone':phone},
+              function(response) {
+                if (response.success) {
+                    alert('Order placed successfully!');
+                } else {
+                    alert('There was an error with your order. Please check the form and try again.');
+                }
+            })
+        });
+
+
+
+    
 });
+
+
+
+    
+        
+
+ 
+    
+            
+
