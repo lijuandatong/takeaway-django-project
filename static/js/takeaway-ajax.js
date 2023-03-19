@@ -32,7 +32,6 @@ $(document).ready(function () {
     });
 
     $('#checkout-form').click(function () {
-
             var first_name = $('#id_checkout_firstname').val();
 
             alert("first_name的值为：" + first_name);
@@ -45,7 +44,7 @@ $(document).ready(function () {
 
             $.get('/takeaway/checkout_save_data',
               {'first_name':first_name, 'last_name':last_name,
-              'address':address, 'city':city,
+                'city':city,
               'zipcode':zipcode, 'email':email,
               'phone':phone},
               function(response) {
