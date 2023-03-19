@@ -35,7 +35,7 @@ $(document).ready(function () {
           
             var first_name = $(this).attr('data-first_name');
             var last_name = $(this).attr('data-last_name');
-            var address = $(this).attr(' data-address');
+        
             var city = $(this).attr('data-city');
             var zipcode = $(this).attr('data-zipcode');
             var email = $(this).attr('data-email');
@@ -44,7 +44,7 @@ $(document).ready(function () {
 
             $.get('/takeaway/checkout_save_data',
               {'first_name':first_name, 'last_name':last_name,
-              'address':address, 'city':city,
+                'city':city,
               'zipcode':zipcode, 'email':email,
               'phone':phone},
               function(response) {
