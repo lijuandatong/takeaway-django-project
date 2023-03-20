@@ -13,13 +13,13 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 
-from takeaway.models import Food, UserProfile, Wallet, Cart, CartDetail, Order, OrderDetail, Comment,Checkout
+from takeaway.models import Food, UserProfile, Wallet, Cart, CartDetail, Order, OrderDetail, Comment, Checkout
 import sqlite3
-
 
 from django.http import JsonResponse
 from .forms import CheckoutForm
 from django.contrib import messages
+
 
 class IndexView(View):
     def get(self, request):
@@ -138,17 +138,24 @@ class OrderDetailsView(View):
 
 class ReviewView(View):
     def get(self, request):
-        print(123)
         username = request.GET['username']
-        feedback = request.GET["feedback"]
-
+        # if 'comment' in request.POST:
+        comment = request.GET['comment']
+        # print(comment)
+        # else:
+        # comment = 'abc!'
         try:
             user = User.objects.get(username=username)
+            # food = Food.objects.get(comment=comment)
+            food_id = '002'
+            food = Food.objects.get(food_id=food_id)
         except User.DoesNotExist:
             return None
+        except Food.DoesNotExist:
+            return None
 
-        review = Comment.objects.get_or_createfilter(user=user)[0]
-        review.comment = feedback
+        review = Comment.objects.create(comment=comment, user=user, food=food)
+        # review.comment = comment
         review.save()
 
         return HttpResponse(review.comment)
@@ -157,7 +164,7 @@ class ReviewView(View):
 class ChargeView(View):
     def get(self, request):
         username = request.GET['username']
-        #amount = request.GET['amount']
+        amount = request.GET['amount']
 
         try:
             user = User.objects.get(username=username)
@@ -242,24 +249,20 @@ def user_cart(request):
     return render(request, 'takeaway/cart.html', context=context_dict)
 
 
-
-
-
-
 class checkout_save_data(View):
     def get(self, request):
-        
+
         first_name = request.GET['first_name']
         last_name = request.GET['last_name']
-        
+
         city = request.GET['city']
         zipcode = request.GET['zipcode']
         email = request.GET['email']
         phone = request.GET['phone']
 
         # Create a new customer object with the retrieved information
-        checkout = Checkout.objects.create(first_name=first_name, last_name=last_name, 
-                            city=city, zipcode=zipcode, email=email, phone=phone)
+        checkout = Checkout.objects.create(first_name=first_name, last_name=last_name,
+                                           city=city, zipcode=zipcode, email=email, phone=phone)
 
         # Save the customer object to the database
         checkout.save()
@@ -268,18 +271,18 @@ class checkout_save_data(View):
         # Return a JSON response indicating success
         response = {'success': True}
         return JsonResponse(response)
-    
+
     def save_order(request):
         form = CheckoutForm()
-        
+
         if request.method == 'POST':
             # Get the form data from the AJAX request
             form = CheckoutForm(request.POST)
             if form.is_valid():
-                
+
                 print(form.cleaned_data)  # print the form data to the console
                 checkout = form.save(commit=True)
-                
+
                 print(checkout)  # print the saved object to the console
                 messages.success(request, 'Order placed successfully.')
                 # Return a JSON response to the AJAX request
@@ -294,6 +297,3 @@ class checkout_save_data(View):
         else:
             form = CheckoutForm()
         return render(request, 'takeaway/checkout.html', {'form': form})
-
-
-    

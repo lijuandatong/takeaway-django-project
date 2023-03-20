@@ -19,20 +19,24 @@ $(document).ready(function () {
     });
 
     $('#btn_review').click(function () {
-        var review = $('#id_review').val();
-        alert("我的评价是：" + review);
-        if(review == ''){
+        var comment = $('#id_review').val();
+        if(comment == ''){
             alert("You should input the review!");
             return;
         }
         //把用户输入的review写入到数据库
         var username = $(this).attr('data-username');
+        var food = $(this).attr('data-food');
+        if(food ==''){
+            food = 'Tofu with Kung Po Sauce';
+         }
+        alert(comment +" "+username +" "+ food)
         //var food_name = $(this).attr('data-food');
 
         $.get('/takeaway/review',
-              {'username': username, 'review': review},
+              { 'review': comment, 'username': username, 'food':food},
               function(data) {
-                  $('#id_review').text(data);
+
               })
 
         // dismiss dialog
