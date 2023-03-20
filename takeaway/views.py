@@ -220,7 +220,11 @@ def getCartCount(user):
 
 
 def product(request):
-    context_dict = {'bold message': 'product!'}
+    food_id = '002'
+    food = Food.objects.get(food_id=food_id)
+    address = food.address
+    comments = Comment.objects.filter(food=food)
+    context_dict = {'bold message': 'product!', 'address': address, 'comments': comments, 'food': food}
     return render(request, 'takeaway/product.html', context=context_dict)
 
 
