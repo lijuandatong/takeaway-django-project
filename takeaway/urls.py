@@ -19,4 +19,6 @@ urlpatterns = [
     path("checkout/", views.user_checkout, name="checkout"),
     path('checkout_save_data/', views.checkout_save_data.as_view(), name='checkout_save_data'),
     path("checkout/<username>/", views.CartView.as_view(), name="checkout"),
+    path('remove-from-cart/<slug>/', views.remove_from_cart, name='remove-from-cart'),
+    path('add-to-cart/<slug>/', views.add_to_cart, name='add-to-cart'),
 ]
