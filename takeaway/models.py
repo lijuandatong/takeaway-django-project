@@ -105,7 +105,6 @@ class CartDetail(models.Model):
 class Checkout(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    address = models.CharField(max_length=200)
     city = models.CharField(max_length=50)
     zipcode = models.CharField(max_length=10)
     email = models.EmailField()
@@ -114,3 +113,19 @@ class Checkout(models.Model):
 
     def __str__(self):
         return self.first_name
+
+    
+class OrderItem(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ordered = models.BooleanField(default=False)
+    food = models.ForeignKey(Food, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.quantity} of {self.food.title}"
+
+    def get_total_item_price(self):
+        return self.quantity * self.food.price
+
+    def get_amount_saved(self):
+        return self.get_total_item_price() 
