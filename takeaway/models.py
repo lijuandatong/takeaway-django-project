@@ -30,6 +30,16 @@ class Food(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_add_to_cart_url(self):
+        return reverse("core:add-to-cart", kwargs={
+            'slug': self.slug
+        })
+
+    def get_remove_from_cart_url(self):
+        return reverse("core:remove-from-cart", kwargs={
+            'slug': self.slug
+        })
 
 
 class Wallet(models.Model):
