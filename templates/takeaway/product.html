@@ -21,7 +21,10 @@
 				  <input class="input-rating" type="text" title="" data-min=0 data-max=5 data-step=0.1 data-size="xs" value="{{ food.rating }}">
 				  <div class="d-flex">
 					  <div class="pricing">
-						  <p class="price"><span class="mr-2 price-dc">￡{{ food.price }}</span><span class="price-sale">￡{{ food.discounted_price }}</span></p>
+						  <p class="price">
+							  <span class="mr-2 price-dc" style="text-decoration: line-through; color: gray;">￡{{ food.price }}</span>
+							  <span class="price-sale">￡{{ food.discounted_price }}</span>
+						  </p>
 					  </div>
 				  </div>
 				  <p>{{ food.description }}.
