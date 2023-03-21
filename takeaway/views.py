@@ -271,7 +271,7 @@ class checkout_save_data(View):
 
 class CartView(View):
     def get_user_details(self, username):
-        print('get detials 函数进入')
+        
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
