@@ -269,3 +269,29 @@ class checkout_save_data(View):
         return JsonResponse(response)
 
 
+class CartView(View):
+    def get_user_details(self, username):
+        print('get detials 函数进入')
+        try:
+            user = User.objects.get(username=username)
+        except User.DoesNotExist:
+            return None
+
+        wallet = Wallet.objects.get_or_create(user=user)[0]
+
+        return wallet
+    def get(self, request, username):
+        #print(request)
+        # username = request.GET['username']
+
+        print('cart fetch')
+        try:
+            wallet = self.get_user_details(username)
+        except TypeError:
+            return redirect(reverse('takeaway:index'))
+
+        context_dict = {
+                        'wallet': wallet,
+                        }
+        return render(request, 'takeaway/checkout.html', context_dict)
+
