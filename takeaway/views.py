@@ -247,18 +247,18 @@ def user_cart(request):
 
 class checkout_save_data(View):
     def get(self, request):
-
+        
         first_name = request.GET['first_name']
         last_name = request.GET['last_name']
-
+        
         city = request.GET['city']
         zipcode = request.GET['zipcode']
         email = request.GET['email']
         phone = request.GET['phone']
 
         # Create a new customer object with the retrieved information
-        checkout = Checkout.objects.create(first_name=first_name, last_name=last_name,
-                                           city=city, zipcode=zipcode, email=email, phone=phone)
+        checkout = Checkout.objects.create(first_name=first_name, last_name=last_name, 
+                            city=city, zipcode=zipcode, email=email, phone=phone)
 
         # Save the customer object to the database
         checkout.save()
@@ -268,28 +268,4 @@ class checkout_save_data(View):
         response = {'success': True}
         return JsonResponse(response)
 
-    def save_order(request):
-        form = CheckoutForm()
 
-        if request.method == 'POST':
-            # Get the form data from the AJAX request
-            form = CheckoutForm(request.POST)
-            if form.is_valid():
-
-                print(form.cleaned_data)  # print the form data to the console
-                checkout = form.save(commit=True)
-
-                print(checkout)  # print the saved object to the console
-                messages.success(request, 'Order placed successfully.')
-                # Return a JSON response to the AJAX request
-                return JsonResponse({'status': 'success'})
-            else:
-                # display error message if form is not valid
-                print("HIII")
-                print(form.errors)
-                messages.error(request, 'Please fill all the required fields.')
-                # Return a JSON response to the AJAX request with the validation errors
-                return JsonResponse({'status': 'error', 'errors': form.errors})
-        else:
-            form = CheckoutForm()
-        return render(request, 'takeaway/checkout.html', {'form': form})
