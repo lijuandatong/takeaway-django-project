@@ -57,17 +57,19 @@ $(document).ready(function () {
     });
 
     $('#checkout-form').click(function () {
-            var first_name = $('#id_checkout_firstname').val();
-            var last_name = $('#id_checkout_lastname').val();
-            var address = $('#id_checkout_address').val();
-            var city = $('#id_checkout_city').val();
-            var zipcode = $('#id_checkout_postcode').val();
-            var email = $('#id_checkout_email').val();
-            var phone = $('#id_checkout_phone').val();
+          
+            var first_name = $(this).attr('data-first_name');
+            var last_name = $(this).attr('data-last_name');
+        
+            var city = $(this).attr('data-city');
+            var zipcode = $(this).attr('data-zipcode');
+            var email = $(this).attr('data-email');
+            var phone = $(this).attr('data-phone');
+
 
             $.get('/takeaway/checkout_save_data',
               {'first_name':first_name, 'last_name':last_name,
-                'city':city,
+               'city':city,
               'zipcode':zipcode, 'email':email,
               'phone':phone},
               function(response) {
