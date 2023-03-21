@@ -21,19 +21,20 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-xl-7 ftco-animate">
-						<form action="#" class="billing-form">
-							<h3 class="mb-4 billing-heading">Billing Details</h3>
+				<form action=# class="billing-form">
+				
+				<h3 class="mb-4 billing-heading">Billing Details</h3>
 	          	<div class="row align-items-end">
 	          		<div class="col-md-6">
 	                <div class="form-group">
-                        <label for="firstname">Firt Name</label>
-	                    <input type="text" id="id_checkout_firstname" class="form-control" placeholder="" required autofocus>
+	                	<label for="firstname">Firt Name</label>
+	                  <input type="text" class="form-control" placeholder="" id = "firstname">
 	                </div>
 	              </div>
 	              <div class="col-md-6">
 	                <div class="form-group">
 	                	<label for="lastname">Last Name</label>
-	                  <input type="text" class="form-control" placeholder="" id="id_checkout_lastname">
+	                  <input type="text" class="form-control" placeholder="">
 	                </div>
                 </div>
                 
@@ -41,7 +42,7 @@
 		            <div class="col-md-6">
 		            	<div class="form-group">
 	                	<label for="streetaddress">Street Address</label>
-	                  <input type="text" class="form-control" placeholder="House number and street name" id="id_checkout_address">
+	                  <input type="text" class="form-control" placeholder="House number and street name">
 	                </div>
 		            </div>
 		            
@@ -49,26 +50,26 @@
 		            <div class="col-md-6">
 		            	<div class="form-group">
 	                	<label for="towncity">Town / City</label>
-	                  <input type="text" class="form-control" placeholder="" id="id_checkout_city">
+	                  <input type="text" class="form-control" placeholder="">
 	                </div>
 		            </div>
 		            <div class="col-md-6">
 		            	<div class="form-group">
 		            		<label for="postcodezip">Postcode / ZIP *</label>
-	                  <input type="text" class="form-control" placeholder="" id="id_checkout_postcode">
+	                  <input type="text" class="form-control" placeholder="">
 	                </div>
 		            </div>
 		            <div class="w-100"></div>
 		            <div class="col-md-6">
 	                <div class="form-group">
 	                	<label for="phone">Phone</label>
-	                  <input type="text" class="form-control" placeholder="" id="id_checkout_phone">
+	                  <input type="text" class="form-control" placeholder="">
 	                </div>
 	              </div>
 	              <div class="col-md-6">
 	                <div class="form-group">
 	                	<label for="emailaddress">Email Address</label>
-	                  <input type="text" class="form-control" placeholder="" id="id_checkout_email">
+	                  <input type="text" class="form-control" placeholder="">
 	                </div>
                 </div>
                 <div class="w-100"></div>
@@ -107,17 +108,21 @@
 	          	<div class="col-md-12">
 	          		<div class="cart-detail p-3 p-md-4">
 	          			<h3 class="billing-heading mb-4">Payment Method</h3>
+						  			Select a Payment Method
+									<br>
 									<div class="form-group">
 										<div class="col-md-12">
 											<div class="radio">
-											   <label><input type="radio" name="optradio" class="mr-2"> Cash</label>
+											   <label><input type="checkbox" name="optradio" class="mr-2"> Cash ({{ wallet.cash }}£) </label>
 											</div>
 										</div>
 									</div>
 									<div class="form-group">
 										<div class="col-md-12">
+											
+											
 											<div class="radio">
-											   <label><input type="radio" name="optradio" class="mr-2"> Wallet Points</label>
+											   <label><input type="checkbox" name="optradio" class="mr-2"> Wallet Points ({{ wallet.points }})</label>
 											</div>
 										</div>
 									</div>
@@ -125,7 +130,7 @@
 									
 									<div class="modal-footer">
 										
-										<button type="button" class="btn btn-primary" id="checkout-form">Place Order</button>
+										<button type="button" class="btn btn-primary checkout-form" id="checkout-form"  data-first_name="{{ checkout.first_name }}" data-last_name="{{ checkout.last_name }}"  data-address="{{ checkout.address }}" data-city="{{ checkout.city }}" data-zipcode="{{ checkout.zipcode }}"  data-email="{{ checkout.email }}"  data-phone="{{ checkout.phone }}" >Place Order</button>
 									  </div>
 								</div>
 	          	</div>
