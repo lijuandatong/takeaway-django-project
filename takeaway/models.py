@@ -56,19 +56,21 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment = models.CharField(max_length=100)
     delivery_state = models.CharField(max_length=10)
-    date = models.DateTimeField(default=timezone.now())
+    ordered = models.BooleanField(default=False)
+    date = models.DateField(default=timezone.now())
 
-    # the information of receiver
-    first_name = models.CharField(max_length=50, default="")
-    last_name = models.CharField(max_length=50, default="")
-    address = models.CharField(max_length=200, default="")
-    city = models.CharField(max_length=50, default="")
-    zipcode = models.CharField(max_length=10, default="")
-    email = models.EmailField(max_length=50, default="")
-    phone = models.CharField(max_length=15, default="")
+    foods = models.ManyToManyField(OrderItem)
 
     def __str__(self):
         return str(self.order_id)
+
+    def get_total(self):
+        total = 0
+        for order_item in self.foods.all():
+            total += order_item.get_amount_saved()
+        
+        return total
+
 
 
 class OrderDetail(models.Model):
