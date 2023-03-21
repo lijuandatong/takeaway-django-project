@@ -31,7 +31,7 @@ history
                 <div class="food-name">{{ orderdetail.food }}</div>
                 <div class="food-count">x {{ orderdetail.count }}</div>
                 <div class="food-review-submit"><p class="btn btn-primary" data-toggle="modal"
-                                                   data-target="#{{orderdetail}}">Review</p></div>
+                                                   data-target="#reviewModal">Review</p></div>
             </div>
             {% endfor %}
             <div class="order-details">
@@ -44,7 +44,7 @@ history
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="{{orderdetail}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="reviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -55,12 +55,14 @@ history
             </div>
             <div class="modal-body">
                 <label class="required" for="id_review">Could you please give us the feedback?</label>
-                <input type="text" name="inputReview" value="{{ reviewModal.ir }}" id="id_review" class="form-control" placeholder="" required
+                <input type="text" name="inputReview" id="id_review" class="form-control"
+                       placeholder="" required
                        autofocus>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" value="{{ reviewModal.af }}" id="btn_review" data-username="{{ user.username }}">
+                <button type="button" class="btn btn-primary" id="btn_review"
+                        data-username="{{ user.username }}" data-food="{{ orderdetail.food }}">
                     Feedback
                 </button>
             </div>

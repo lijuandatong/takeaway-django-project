@@ -138,12 +138,9 @@ class OrderDetailsView(View):
 
 class ReviewView(View):
     def get(self, request):
+        # print(request.get())
         username = request.GET['username']
-        # if 'comment' in request.POST:
-        comment = request.GET['comment']
-        # print(comment)
-        # else:
-        # comment = 'abc!'
+        comment = request.GET['review']
         try:
             user = User.objects.get(username=username)
             # food = Food.objects.get(comment=comment)
@@ -155,7 +152,6 @@ class ReviewView(View):
             return None
 
         review = Comment.objects.create(comment=comment, user=user, food=food)
-        # review.comment = comment
         review.save()
 
         return HttpResponse(review.comment)

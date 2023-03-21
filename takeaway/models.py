@@ -80,6 +80,7 @@ class Comment(models.Model):
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     back_points = models.IntegerField(default=0)
 
+
     def __str__(self):
         return self.user.username
 
