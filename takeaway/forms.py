@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from takeaway.models import UserProfile,Checkout
+from takeaway.models import UserProfile
 
 
 class UserForm(forms.ModelForm):
@@ -21,7 +21,7 @@ class UserProfileForm(forms.ModelForm):
 
 
 
-class CheckoutForm(forms.ModelForm):
-    class Meta:
-        model = Checkout
-        fields = ('first_name', 'last_name', 'address', 'city', 'zipcode','email', 'phone',)
+# class CheckoutForm(forms.ModelForm):
+#     class Meta:
+#         model = Checkout
+#         fields = ('first_name', 'last_name', 'address', 'city', 'zipcode','email', 'phone',)

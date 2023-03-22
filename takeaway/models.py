@@ -31,15 +31,15 @@ class Food(models.Model):
     def __str__(self):
         return self.title
     
-    def get_add_to_cart_url(self):
-        return reverse("core:add-to-cart", kwargs={
-            'slug': self.slug
-        })
-
-    def get_remove_from_cart_url(self):
-        return reverse("core:remove-from-cart", kwargs={
-            'slug': self.slug
-        })
+    # def get_add_to_cart_url(self):
+    #     return reverse("core:add-to-cart", kwargs={
+    #         'slug': self.slug
+    #     })
+    #
+    # def get_remove_from_cart_url(self):
+    #     return reverse("core:remove-from-cart", kwargs={
+    #         'slug': self.slug
+    #     })
 
 
 class Wallet(models.Model):
@@ -59,18 +59,15 @@ class Order(models.Model):
     ordered = models.BooleanField(default=False)
     date = models.DateField(default=timezone.now())
 
-    foods = models.ManyToManyField(OrderItem)
-
     def __str__(self):
         return str(self.order_id)
 
-    def get_total(self):
-        total = 0
-        for order_item in self.foods.all():
-            total += order_item.get_amount_saved()
-        
-        return total
-
+    # def get_total(self):
+    #     total = 0
+    #     for order_item in self.foods.all():
+    #         total += order_item.get_amount_saved()
+    #
+    #     return total
 
 
 class OrderDetail(models.Model):
@@ -79,7 +76,7 @@ class OrderDetail(models.Model):
     count = models.IntegerField(default=0)
     payment = models.CharField(max_length=100)
     delivery_state = models.CharField(max_length=10)
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.order.order_id)
@@ -87,11 +84,10 @@ class OrderDetail(models.Model):
 
 class Comment(models.Model):
     comment = models.CharField(max_length=200)
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField(default=timezone.now)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     back_points = models.IntegerField(default=0)
-
 
     def __str__(self):
         return self.user.username
@@ -109,6 +105,8 @@ class CartDetail(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     food = models.ForeignKey(Food, on_delete=models.CASCADE)
     count = models.IntegerField(default=0)
+    total_price = models.FloatField(max_length=20, default=0)
+    total_discount = models.FloatField(max_length=20, default=0)
 
     def __str__(self):
         return str(self.cart.cart_id)
@@ -127,17 +125,17 @@ class Checkout(models.Model):
         return self.first_name
 
     
-class OrderItem(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    ordered = models.BooleanField(default=False)
-    food = models.ForeignKey(Food, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-
-    def __str__(self):
-        return f"{self.quantity} of {self.food.title}"
-
-    def get_total_item_price(self):
-        return self.quantity * self.food.price
-
-    def get_amount_saved(self):
-        return self.get_total_item_price() 
+# class OrderItem(models.Model):
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     ordered = models.BooleanField(default=False)
+#     food = models.ForeignKey(Food, on_delete=models.CASCADE)
+#     quantity = models.IntegerField(default=1)
+#
+#     def __str__(self):
+#         return f"{self.quantity} of {self.food.title}"
+#
+#     def get_total_item_price(self):
+#         return self.quantity * self.food.price
+#
+#     def get_amount_saved(self):
+#         return self.get_total_item_price()

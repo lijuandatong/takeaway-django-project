@@ -43,7 +43,7 @@
                         <a class="dropdown-item" href="{% url 'auth_logout' %}?next={% url 'takeaway:index'%}">Logout</a>
                     </div>
                 </li>
-                <li class="nav-item cta cta-colored"><a href="" class="nav-link" id="id_cart"><span
+                <li class="nav-item cta cta-colored"><a href="{% url 'takeaway:cart' %}" class="nav-link" id="id_cart"><span
                         class="icon-shopping_cart"></span>[{{ cart_count }}]</a></li>
                 {% else %}
                 <li class="nav-item"><a href="{% url 'auth_login' %}" class="nav-link">Log in</a></li>

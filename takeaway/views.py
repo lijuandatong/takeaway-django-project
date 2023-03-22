@@ -1,6 +1,5 @@
 from datetime import datetime
 
-from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render
@@ -17,7 +16,7 @@ from takeaway.models import Food, UserProfile, Wallet, Cart, CartDetail, Order, 
 import sqlite3
 
 from django.http import JsonResponse
-from .forms import CheckoutForm
+# from .forms import CheckoutForm
 from django.contrib import messages
 
 
@@ -176,27 +175,23 @@ class ChargeView(View):
 
 class AddCartView(View):
     def get(self, request):
-        username = request.GET['username']
         food_id = request.GET['food_id']
         count = request.GET['count']
         if count is None:
             count = 1
 
         try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
-            return None
-
-        try:
             food = Food.objects.get(food_id=food_id)
         except Food.DoesNotExist:
             return None
 
-        cart = Cart.objects.get_or_create(user=user)[0]
+        cart = Cart.objects.get_or_create(user=request.user)[0]
         cart.save()
 
         cart_detail = CartDetail.objects.get_or_create(cart=cart, food=food)[0]
         cart_detail.count = cart_detail.count + int(count)
+        cart_detail.total_price = food.discounted_price * cart_detail.count
+        cart_detail.total_discount = (food.price - food.discounted_price) * cart_detail.count
         cart_detail.save()
 
         cart_detail_list = CartDetail.objects.filter(cart=cart)
@@ -205,6 +200,43 @@ class AddCartView(View):
             total_count += cart_detail.count
 
         return HttpResponse(str(total_count))
+
+
+class MinusQuantityFromCart(View):
+    def get(self, request):
+        food_id = request.GET['food_id']
+
+        try:
+            food = Food.objects.get(food_id=food_id)
+        except Food.DoesNotExist:
+            return None
+
+        try:
+            cart = Cart.objects.get(user=request.user)
+        except Cart.DoesNotExist:
+            return None
+
+        cart_detail = CartDetail.objects.get(cart=cart, food=food)
+        cart_detail.count = cart_detail.count - 1
+        cart_detail.total_price = food.discounted_price * cart_detail.count
+        cart_detail.total_discount = (food.price - food.discounted_price) * cart_detail.count
+        cart_detail.save()
+
+        cart_detail_list = CartDetail.objects.filter(cart=cart)
+        total_count = 0
+        for cart_detail in cart_detail_list:
+            total_count += cart_detail.count
+
+        return HttpResponse(str(total_count))
+
+
+class RemoveFoodFromCart(View):
+    def get(self, request):
+        print("购物车移除商品")
+        cart_detail_id = request.GET['cart_detail_id']
+        CartDetail.objects.get(id=cart_detail_id).delete()
+
+        return HttpResponse()
 
 
 def getCartCount(user):
@@ -247,18 +279,17 @@ def user_cart(request):
 
 class checkout_save_data(View):
     def get(self, request):
-        
         first_name = request.GET['first_name']
         last_name = request.GET['last_name']
-        
+
         city = request.GET['city']
         zipcode = request.GET['zipcode']
         email = request.GET['email']
         phone = request.GET['phone']
 
         # Create a new customer object with the retrieved information
-        checkout = Checkout.objects.create(first_name=first_name, last_name=last_name, 
-                            city=city, zipcode=zipcode, email=email, phone=phone)
+        checkout = Checkout.objects.create(first_name=first_name, last_name=last_name,
+                                           city=city, zipcode=zipcode, email=email, phone=phone)
 
         # Save the customer object to the database
         checkout.save()
@@ -270,85 +301,81 @@ class checkout_save_data(View):
 
 
 class CartView(View):
-    def get_user_details(self, username):
-        
+    @method_decorator(login_required)
+    def get(self, request):
+        print("购物车页面进入")
         try:
-            user = User.objects.get(username=username)
-        except User.DoesNotExist:
+            cart = Cart.objects.get(user=request.user)
+        except Cart.DoesNotExist:
             return None
 
-        wallet = Wallet.objects.get_or_create(user=user)[0]
+        cart_detail_list = CartDetail.objects.filter(cart=cart)
 
-        return wallet
-    def get(self, request, username):
-        #print(request)
-        # username = request.GET['username']
+        total_price = 0
+        total_discount = 0
+        for cart_detail in cart_detail_list:
+            print("购物车里的商品为：" + cart_detail.food.title)
+            total_price += cart_detail.total_price
+            total_discount += cart_detail.total_discount
 
-        print('cart fetch')
-        try:
-            wallet = self.get_user_details(username)
-        except TypeError:
-            return redirect(reverse('takeaway:index'))
+        context_dict = {'cart_detail_list': cart_detail_list,
+                        'total_price': total_price,
+                        'total_discount': total_discount}
+        return render(request, 'takeaway/cart.html', context_dict)
 
-        context_dict = {
-                        'wallet': wallet,
-                        }
-        return render(request, 'takeaway/checkout.html', context_dict)
-
-
-@login_required
-def add_to_cart(request, slug):
-    item = get_object_or_404(Food, slug=slug)
-    order_item, created = OrderItem.objects.get_or_create(
-        item=item,
-        user=request.user,
-        ordered=False
-    )
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
-    if order_qs.exists():
-        order = order_qs[0]
-        if order.items.filter(item__slug=item.slug).exists():
-            order_item.quantity += 1
-            order_item.save()
-            messages.info(request, "Item qty was updated.")
-            return redirect('takeaway/cart.html')
-        else:
-            order.items.add(order_item)
-            messages.info(request, "Item was added to your cart.")
-            return redirect('takeaway/cart.html')
-    else:
-        ordered_date = timezone.now()
-        order = Order.objects.create(
-            user=request.user, ordered_date=ordered_date)
-        order.items.add(order_item)
-        messages.info(request, "Item was added to your cart.")
-    return redirect('takeaway/cart.html')
-
-
-@login_required
-def remove_from_cart(request, slug):
-    item = get_object_or_404(Food, slug=slug)
-    order_qs = Order.objects.filter(
-        user=request.user,
-        ordered=False)
-    if order_qs.exists():
-        order = order_qs[0]
-        # check if the order item is in the order
-        if order.items.filter(item__slug=item.slug).exists():
-            order_item = OrderItem.objects.filter(
-                item=item,
-                user=request.user,
-                ordered=False
-            )[0]
-            order.items.remove(order_item)
-            messages.info(request, "Item was removed from your cart.")
-            return redirect('takeaway/cart.html')
-        else:
-            # add a message saying the user dosent have an order
-            messages.info(request, "Item was not in your cart.")
-            return redirect('takeaway/cart.html', slug=slug)
-    else:
-        # add a message saying the user dosent have an order
-        messages.info(request, "u don't have an active order.")
-        return redirect('takeaway/index.html', slug=slug)
-    return redirect('takeaway/index.html', slug=slug)
+# @login_required
+# def add_to_cart(request, slug):
+#     item = get_object_or_404(Food, slug=slug)
+#     order_item, created = OrderItem.objects.get_or_create(
+#         item=item,
+#         user=request.user,
+#         ordered=False
+#     )
+#     order_qs = Order.objects.filter(user=request.user, ordered=False)
+#     if order_qs.exists():
+#         order = order_qs[0]
+#         if order.items.filter(item__slug=item.slug).exists():
+#             order_item.quantity += 1
+#             order_item.save()
+#             messages.info(request, "Item qty was updated.")
+#             return redirect('takeaway/cart.html')
+#         else:
+#             order.items.add(order_item)
+#             messages.info(request, "Item was added to your cart.")
+#             return redirect('takeaway/cart.html')
+#     else:
+#         ordered_date = timezone.now()
+#         order = Order.objects.create(
+#             user=request.user, ordered_date=ordered_date)
+#         order.items.add(order_item)
+#         messages.info(request, "Item was added to your cart.")
+#     return redirect('takeaway/cart.html')
+#
+#
+# @login_required
+# def remove_from_cart(request, slug):
+#     item = get_object_or_404(Food, slug=slug)
+#     order_qs = Order.objects.filter(
+#         user=request.user,
+#         ordered=False)
+#     if order_qs.exists():
+#         order = order_qs[0]
+#         # check if the order item is in the order
+#         if order.items.filter(item__slug=item.slug).exists():
+#             order_item = OrderItem.objects.filter(
+#                 item=item,
+#                 user=request.user,
+#                 ordered=False
+#             )[0]
+#             order.items.remove(order_item)
+#             messages.info(request, "Item was removed from your cart.")
+#             return redirect('takeaway/cart.html')
+#         else:
+#             # add a message saying the user dosent have an order
+#             messages.info(request, "Item was not in your cart.")
+#             return redirect('takeaway/cart.html', slug=slug)
+#     else:
+#         # add a message saying the user dosent have an order
+#         messages.info(request, "u don't have an active order.")
+#         return redirect('takeaway/index.html', slug=slug)
+#     return redirect('takeaway/index.html', slug=slug)

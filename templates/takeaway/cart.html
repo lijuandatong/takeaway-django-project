@@ -5,122 +5,113 @@
     Cart
 {% endblock %}
 
-	{% block body_block %}
-	<div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_1.jpg' %});">
-		<div class="container">
-		  <div class="row no-gutters slider-text align-items-center justify-content-center">
-			<div class="col-md-9 ftco-animate text-center">
-				<p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Cart</span></p>
-			  <h1 class="mb-0 bread">My Cart</h1>
-			</div>
-		  </div>
-		</div>
-	  </div>
+{% block body_block %}
+    <div class="hero-wrap hero-bread" style="background-image: url({% static 'images/bg_1.jpg' %});">
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col-md-9 ftco-animate text-center">
+{#                    <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Cart</span></p>#}
+                    <h1 class="mb-0 bread">My Cart</h1>
+                </div>
+            </div>
+        </div>
+    </div>
     <section class="ftco-section ftco-cart">
-			<div class="container">
-				<div class="row">
-    			<div class="col-md-12 ftco-animate">
-    				<div class="cart-list">
-	    				<table class="table">
-						    <thead class="thead-primary">
-						      <tr class="text-center">
-						        <th>&nbsp;</th>
-						        <th>&nbsp;</th>
-						        <th>Product name</th>
-						        <th>Price</th>
-						        <th>Quantity</th>
-						        <th>Total</th>
-						      </tr>
-						    </thead>
-							<tbody>
-								{% for order_item in object.items.all %}
-								<tr>
-								  <th scope="row">{{ forloop.counter }}</th>
-								  <td>
-								  <img src="{{ order_item.item.image.url }}" style="width: 130px;"> 
-								  </td>
-								  <td>{{ order_item.item.title }}</td>
-								  <td>{{ order_item.item.price }}</td>
-								  <td>
-									  
-									  {{ order_item.quantity }}
-									  <a href="{% url 'core:add-to-cart' order_item.item.slug %}"><i class="fas fa-plus ml-3"></i></a>
-								  </td>
-								  <td>
-									
-										<span class="badge badge-primary">  Saving ${{ order_item.get_amount_saved }}</span>
-									
-									<a style="color: red" href="{% url 'core:remove-from-cart' order_item.item.slug %}">
-										<i class="fas fa-trash float-right"></i>
-									</a>
-								  </td>
-								</tr>
-								{% empty %}
-								<tr>
-								  <td colspan="5">Your cart is empty</td>
-								</tr>
-							  </tbody>
-							  {% endfor %}
-							  
-							  {% if object.get_total %}
-							  <tr>
-								  <td colspan="5"><b>Order Total : </b></td>
-								  <td><b>${{ object.get_total }}</b></td>
-							  </tr>
-							  <tr>
-								  <td colspan="5">
-									  <a href="/checkout" class="btn btn-warning float-right ml-2">Checkout</a>
-									  <a href="/" class="btn btn-primary float-right">Continue Shopping</a>
-					  
-								  </td>
-							  </tr>
-							  {% endif %}
-							</table>
-						  </div>
-						</div>
-					  </div>
-					  
-					
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 ftco-animate">
+                    <div class="cart-list">
+                        <table class="table">
+                            <thead class="thead-primary">
+                            <tr class="text-center">
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                                <th>Product name</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for cart_detail in cart_detail_list %}
+                                <tr>
+{#                                    <th scope="row">{{ forloop.counter }}</th>#}
+                                    <td class="product-remove" data-product="{{ cart_detail.id }}"><a href="#"><span class="ion-ios-close"></span></a></td>
+                                    <td>
+                                        <img src="{{ MEDIA_URL }}{{ cart_detail.food.picture }}" style="width: 130px;">
+                                    </td>
+                                    <td>{{ cart_detail.food.title }}</td>
+                                    <td>￡{{ cart_detail.food.discounted_price }}</td>
+                                    <td>
+                                        <div class="col-md-12 d-flex justify-content-center align-items-center">
+                                            <div class="input-group col-md-9 d-flex mb-3">
+                                              <span class="input-group-btn mr-2">
+                                                  <button type="button" class="cart_minus quantity-left-minus btn" data-food="{{ cart_detail.food.food_id }}" data-type="minus" data-field="" style="border-radius: 0px;">
+                                                      <i class="ion-ios-remove"></i>
+                                                  </button>
+                                              </span>
+                                              <input type="number" name="quantity" class="cart_quantity form-control input-number" value="{{ cart_detail.count }}" min="1" max="100">
+                                              <span class="input-group-btn ml-2">
+                                                  <button type="button" class="cart_plus quantity-right-plus btn" data-food="{{ cart_detail.food.food_id }}" data-type="plus" data-field="" style="border-radius: 0px;">
+                                                      <i class="ion-ios-add"></i>
+                                                  </button>
+                                              </span>
+                                            </div>
+				                        </div>
 
-	{% endblock %}
-    
-  
 
-{% block script_block %}
-  <script>
-		$(document).ready(function(){
+{#                                        {{ cart_detail.count }}#}
+{#                                        <a href=""><i#}
+{#                                                class="fas fa-plus ml-3"></i></a>#}
+                                    </td>
+                                    <td>
 
-		var quantitiy=0;
-		   $('.quantity-right-plus').click(function(e){
-		        
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		            
-		            $('#quantity').val(quantity + 1);
+                                        <span>￡{{ cart_detail.total_price }}</span>
 
-		          
-		            // Increment
-		        
-		    });
+                                        <a style="color: red"
+                                           href="">
+                                            <i class="fas fa-trash float-right"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5">Your cart is empty</td>
+                                </tr>
+                                </tbody>
+                            {% endfor %}
 
-		     $('.quantity-left-minus').click(function(e){
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		      
-		            // Increment
-		            if(quantity>0){
-		            $('#quantity').val(quantity - 1);
-		            }
-		    });
-		    
-		});
-	</script>   
+                            {% if cart_detail_list %}
+                                <tr>
+                                    <td colspan="5" style="text-align-last: right; font-size: 20px">
+                                        <b>Order Total : </b>
+                                        <br>
+                                        <b>Saving : </b>
+                                    </td>
+                                    <td style="font-size: 20px">
+                                        <b>￡{{ total_price }}</b>
+                                        <br>
+                                        <b>￡{{ total_discount }}</b>
+                                    </td>
+                                </tr>
+{#                                <tr>#}
+{#                                    <td colspan="5" style="text-align-last: right; font-size: 20px"><b>Saving : </b></td>#}
+{#                                    <td style="font-size: 20px"><b>￡{{ total_discount }}</b></td>#}
+{#                                </tr>#}
+                                <tr>
+                                    <td colspan="6">
+                                        <a href="/checkout" class="btn btn-primary btn-lg float-right ml-2">Checkout</a>
+                                        <a href="/" class="btn btn-secondary btn-lg float-right">Continue Shopping</a>
+
+                                    </td>
+
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
 {% endblock %}

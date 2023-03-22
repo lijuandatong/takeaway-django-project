@@ -52,8 +52,8 @@ function initMap() {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    const minusButton = document.querySelector(".quantity-left-minus");
-    const plusButton = document.querySelector(".quantity-right-plus");
+    const minusButton = document.querySelector(".detail_minus");
+    const plusButton = document.querySelector(".detail_plus");
     const inputField = document.querySelector("#quantity");
 
     minusButton.addEventListener("click", function() {
