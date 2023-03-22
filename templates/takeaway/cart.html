@@ -46,13 +46,13 @@
                                         <div class="col-md-12 d-flex justify-content-center align-items-center">
                                             <div class="input-group col-md-9 d-flex mb-3">
                                               <span class="input-group-btn mr-2">
-                                                  <button type="button" class="cart_minus quantity-left-minus btn" data-food="{{ cart_detail.food.food_id }}" data-type="minus" data-field="" style="border-radius: 0px;">
+                                                  <button type="button" class="cart_minus quantity-left-minus btn" data-id="{{ cart_detail.food.food_id }}" data-food="{{ cart_detail.food.food_id }}" data-type="minus" data-field="" style="border-radius: 0px;">
                                                       <i class="ion-ios-remove"></i>
                                                   </button>
                                               </span>
-                                              <input type="number" name="quantity" class="cart_quantity form-control input-number" value="{{ cart_detail.count }}" min="1" max="100">
+                                              <input type="number" name="quantity" class="cart_quantity form-control input-number" data-id="{{ cart_detail.food.food_id }}" value="{{ cart_detail.count }}" min="1" max="100">
                                               <span class="input-group-btn ml-2">
-                                                  <button type="button" class="cart_plus quantity-right-plus btn" data-food="{{ cart_detail.food.food_id }}" data-type="plus" data-field="" style="border-radius: 0px;">
+                                                  <button type="button" class="cart_plus quantity-right-plus btn" data-id="{{ cart_detail.food.food_id }}" data-food="{{ cart_detail.food.food_id }}" data-type="plus" data-field="" style="border-radius: 0px;">
                                                       <i class="ion-ios-add"></i>
                                                   </button>
                                               </span>

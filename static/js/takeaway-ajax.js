@@ -52,32 +52,39 @@ $(document).ready(function () {
     });
 
     $('.cart_minus').click(function () {
-        //更新数据库
-        var cart_quantity = $('.cart_quantity').val();
-        if (cart_quantity > 1) {
-            cart_quantity--;
-            $('.cart_quantity').val(cart_quantity);
-        }
+        var id = $(this).attr('data-id');
+        $(".cart_quantity").each(function(){
+            if($(this).attr('data-id') == id){
+                var cart_quantity = $(this).val();
+                if (cart_quantity > 1) {
+                    cart_quantity--;
+                    $(this).val(cart_quantity);
 
-        var food_id = $(this).attr('data-food');
-        alert("减少数量" + food_id)
-
-        $.get('/takeaway/minusQuantityFromCart',
-            {'food_id': food_id},
-            function (data) {
-                $('#id_cart').html(`<span class="icon-shopping_cart"></span>[${data}]`);
-            });
+                    var food_id = id;
+                    $.get('/takeaway/minusQuantityFromCart',
+                        {'food_id': food_id},
+                        function (data) {
+                            $('#id_cart').html(`<span class="icon-shopping_cart"></span>[${data}]`);
+                        });
+                }
+            }
+        });
     });
 
     $('.cart_plus').click(function () {
-        var cart_quantity = $('.cart_quantity').val();
-        cart_quantity++;
-        $('.cart_quantity').val(cart_quantity);
+        var id = $(this).attr('data-id');
+        $(".cart_quantity").each(function(){
+            if($(this).attr('data-id') == id){
+                var cart_quantity = $(this).val();
+                cart_quantity++;
+                $(this).val(cart_quantity);
 
-        //把food加入到数据库
-        var food_id = $(this).attr('data-food');
-        addFoodToCart(food_id, 1, function (data) {
-            $('#id_cart').html(`<span class="icon-shopping_cart"></span>[${data}]`);
+                //把food加入到数据库
+                var food_id = id;
+                addFoodToCart(food_id, 1, function (data) {
+                    $('#id_cart').html(`<span class="icon-shopping_cart"></span>[${data}]`);
+                });
+            }
         });
     });
 
