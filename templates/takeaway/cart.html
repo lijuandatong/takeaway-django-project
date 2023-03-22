@@ -50,7 +50,7 @@
                                                       <i class="ion-ios-remove"></i>
                                                   </button>
                                               </span>
-                                              <input type="number" name="quantity" class="cart_quantity form-control input-number" data-id="{{ cart_detail.food.food_id }}" value="{{ cart_detail.count }}" min="1" max="100">
+                                              <input type="number" name="quantity" class="cart_quantity form-control input-number" data-id="{{ cart_detail.food.food_id }}" value="{{ cart_detail.count }}" min="1" max="100" readonly>
                                               <span class="input-group-btn ml-2">
                                                   <button type="button" class="cart_plus quantity-right-plus btn" data-id="{{ cart_detail.food.food_id }}" data-food="{{ cart_detail.food.food_id }}" data-type="plus" data-field="" style="border-radius: 0px;">
                                                       <i class="ion-ios-add"></i>
@@ -66,7 +66,7 @@
                                     </td>
                                     <td>
 
-                                        <span>￡{{ cart_detail.total_price }}</span>
+                                        <span class="food_total_price" data-id="{{ cart_detail.food.food_id }}" data-unit-price="{{ cart_detail.food.discounted_price }}" data-total-price="{{ cart_detail.total_price }}">￡{{ cart_detail.total_price }}</span>
 
                                         <a style="color: red"
                                            href="">
@@ -85,13 +85,13 @@
                                 <tr>
                                     <td colspan="5" style="text-align-last: right; font-size: 20px">
                                         <b>Order Total : </b>
-                                        <br>
-                                        <b>Saving : </b>
+{#                                        <br>#}
+{#                                        <b>Saving : </b>#}
                                     </td>
                                     <td style="font-size: 20px">
-                                        <b>￡{{ total_price }}</b>
-                                        <br>
-                                        <b>￡{{ total_discount }}</b>
+                                        <b class="total_price" data-total-price="{{ total_price }}">￡{{ total_price }}</b>
+{#                                        <br>#}
+{#                                        <b>￡{{ total_discount }}</b>#}
                                     </td>
                                 </tr>
 {#                                <tr>#}

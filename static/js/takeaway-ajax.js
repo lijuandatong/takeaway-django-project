@@ -60,6 +60,22 @@ $(document).ready(function () {
                     cart_quantity--;
                     $(this).val(cart_quantity);
 
+                    // 更新价格
+                    var food_unit_price = 0
+                    $(".food_total_price").each(function(){
+                        if($(this).attr('data-id') == id){
+                            var food_total_price = parseInt($(this).text().substring(1));
+                            food_unit_price = parseInt($(this).attr('data-unit-price'));
+                            food_total_price -= food_unit_price
+
+                            $(this).text('￡' + food_total_price);
+                        }
+                    });
+
+                    var total_price = parseInt($(".total_price").text().substring(1));
+                    $(".total_price").text('￡' + (total_price - food_unit_price));
+
+                    // 更新数据库
                     var food_id = id;
                     $.get('/takeaway/minusQuantityFromCart',
                         {'food_id': food_id},
@@ -75,9 +91,25 @@ $(document).ready(function () {
         var id = $(this).attr('data-id');
         $(".cart_quantity").each(function(){
             if($(this).attr('data-id') == id){
+                //更新数量
                 var cart_quantity = $(this).val();
                 cart_quantity++;
                 $(this).val(cart_quantity);
+
+                // 更新价格
+                var food_unit_price = 0
+                $(".food_total_price").each(function(){
+                    if($(this).attr('data-id') == id){
+                        var food_total_price = parseInt($(this).text().substring(1));
+                        food_unit_price = parseInt($(this).attr('data-unit-price'));
+                        food_total_price += food_unit_price
+
+                        $(this).text('￡' + food_total_price);
+                    }
+                });
+
+                var total_price = parseInt($(".total_price").text().substring(1));
+                $(".total_price").text('￡' + (total_price + food_unit_price));
 
                 //把food加入到数据库
                 var food_id = id;
@@ -94,8 +126,8 @@ $(document).ready(function () {
         $.get('/takeaway/removeFoodFromCart',
             {'cart_detail_id': cart_detail_id},
             function () {
-                //刷新购物车页面
-
+                //刷新购物车页面(刷新整个页面，不优化，待优化)
+                history.go(0);
             })
     });
 
