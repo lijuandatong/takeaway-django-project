@@ -107,29 +107,32 @@
 	          	<div class="col-md-12">
 	          		<div class="cart-detail p-3 p-md-4">
 	          			<h3 class="billing-heading mb-4">Payment Method</h3>
-						  			Select a Payment Method
-									<br>
+{#						  			Select a Payment Method#}
+{#									<br>#}
+{#									<div class="form-group">#}
+{#										<div class="col-md-12">#}
+{#											<div class="radio">#}
+{#											   <label><input type="checkbox" name="optradio" class="mr-2"> Cash ({{ wallet.cash }}£) </label>#}
+{#											</div>#}
+{#										</div>#}
+{#									</div>#}
 									<div class="form-group">
 										<div class="col-md-12">
-											<div class="radio">
-											   <label><input type="checkbox" name="optradio" class="mr-2"> Cash ({{ wallet.cash }}£) </label>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<div class="col-md-12">
-											
-											
 											<div class="radio">
 											   <label><input type="checkbox" name="optradio" class="mr-2"> Wallet Points ({{ wallet.points }})</label>
 											</div>
 										</div>
 									</div>
+
+                                    <div class="col-md-12">
+                                        <p>You need to pay:</p>
+                                        <p>￡100</p>
+                                    </div>
 									
 									
 									<div class="modal-footer">
 										
-										<button type="button" class="btn btn-primary checkout-form" id="checkout-form"  data-first_name="{{ checkout.first_name }}" data-last_name="{{ checkout.last_name }}"  data-address="{{ checkout.address }}" data-city="{{ checkout.city }}" data-zipcode="{{ checkout.zipcode }}"  data-email="{{ checkout.email }}"  data-phone="{{ checkout.phone }}" >Place Order</button>
+										<button type="button" class="btn btn-primary btn-lg checkout-form" id="checkout-form" >Pay</button>
 									  </div>
 								</div>
 	          	</div>
