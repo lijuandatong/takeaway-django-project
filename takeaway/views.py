@@ -261,42 +261,6 @@ def product(request):
     return render(request, 'takeaway/product.html', context=context_dict)
 
 
-class PlaceOrder(View):
-    def get(self, request):
-        first_name = request.GET['first_name']
-        last_name = request.GET['last_name']
-        city = request.GET['city']
-        zipcode = request.GET['zipcode']
-        email = request.GET['email']
-        phone = request.GET['phone']
-        points = request.GET['payment_points']
-        cash = request.GET['payment_cash']
-        order_id = request.GET['order_id']
-
-        # Create a new customer object with the retrieved information
-        order = Order.objects.get(order_id=order_id)
-        order.first_name = first_name
-        order.last_name = last_name
-        order.city = city
-        order.zipcode = zipcode
-        order.email = email
-        order.phone = phone
-        if points == 0:
-            order.payment = '￡' + str(cash)
-        elif cash == 0:
-            order.payment = str(points) + 'points'
-        else:
-            order.payment = '￡' + str(cash) + ' + '+ str(points) + 'points'
-
-        # Save the customer object to the database
-        order.save()
-
-        # 还要更新用户钱包数据
-
-        response = {'success': True}
-        return JsonResponse(response)
-
-
 class CartView(View):
     @method_decorator(login_required)
     def get(self, request):
@@ -360,3 +324,42 @@ class CheckoutView(View):
                         'points': points}
 
         return render(request, 'takeaway/checkout.html', context_dict)
+
+
+class PlaceOrder(View):
+    def get(self, request):
+        first_name = request.GET['first_name']
+        last_name = request.GET['last_name']
+        street = request.GET['address']
+        city = request.GET['city']
+        zipcode = request.GET['zipcode']
+        email = request.GET['email']
+        phone = request.GET['phone']
+        points = request.GET['payment_points']
+        cash = request.GET['payment_cash']
+        order_id = request.GET['order_id']
+
+        # Create a new customer object with the retrieved information
+        order = Order.objects.get(order_id=order_id)
+        order.first_name = first_name
+        order.last_name = last_name
+        order.city = city
+        order.zipcode = zipcode
+        order.email = email
+        order.phone = phone
+        order.street = street
+        if points == 0:
+            order.payment = '￡' + str(cash)
+        elif cash == 0:
+            order.payment = str(points) + 'points'
+        else:
+            order.payment = '￡' + str(cash) + ' + ' + str(points) + ' points'
+
+        print('存入的payment为：' + order.payment)
+        order.delivery_state = "1"
+        order.save()
+
+        # 还要更新用户钱包数据
+
+        response = {'success': True}
+        return JsonResponse(response)

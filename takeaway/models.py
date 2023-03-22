@@ -45,13 +45,15 @@ class Order(models.Model):
     order_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     payment = models.CharField(max_length=100)
+    # "0"为下单未支付， ”1“为已支付+派送结束状态
     delivery_state = models.CharField(max_length=10)
     ordered = models.BooleanField(default=False)
-    date = models.DateField(default=timezone.now())
+    date = models.DateTimeField(default=timezone.now)
 
     first_name = models.CharField(max_length=50, default="")
     last_name = models.CharField(max_length=50, default="")
     city = models.CharField(max_length=50, default="")
+    street = models.CharField(max_length=50, default="")
     zipcode = models.CharField(max_length=10, default="")
     email = models.EmailField(max_length=30, default="")
     phone = models.CharField(max_length=15, default="")

@@ -106,13 +106,13 @@ $(document).ready(function () {
     $('#checkout-form').click(function () {
         var order_id = $(this).attr('data-order-id');
 
-        var first_name = $(this).attr('data-first_name');
-        var last_name = $(this).attr('data-last_name');
-
-        var city = $(this).attr('data-city');
-        var zipcode = $(this).attr('data-zipcode');
-        var email = $(this).attr('data-email');
-        var phone = $(this).attr('data-phone');
+        var first_name = $('#id_checkout_firstname').val();
+        var last_name = $('#id_checkout_lastname').val();
+        var address = $('#id_checkout_address').val();
+        var city = $('#id_checkout_city').val();
+        var zipcode = $('#id_checkout_postcode').val();
+        var email = $('#id_checkout_email').val();
+        var phone = $('#id_checkout_phone').val();
 
         var total_price = $('#id_points_checkbox').attr('data-total-price');
         var points = $('#id_points_checkbox').attr('data-points');
@@ -140,10 +140,12 @@ $(document).ready(function () {
             payment_cash = parseFloat(total_price);
         }
 
+        alert('用了积分：' + payment_points + ",用了现金：" + payment_cash);
+
         $.get('/takeaway/placeOrder',
             {
                 'first_name': first_name, 'last_name': last_name,
-                'city': city,
+                'city': city, 'address': address,
                 'zipcode': zipcode, 'email': email,
                 'phone': phone,
                 'payment_points': payment_points,
