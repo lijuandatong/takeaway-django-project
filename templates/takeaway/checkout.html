@@ -91,16 +91,16 @@
 		    					</p>
 		    					<p class="d-flex">
 		    						<span>Delivery</span>
-		    						<span>$0.00</span>
+		    						<span>￡0.00</span>
 		    					</p>
 		    					<p class="d-flex">
 		    						<span>Discount</span>
-		    						<span>$3.00</span>
+		    						<span>￡{{ total_discount }}</span>
 		    					</p>
 		    					<hr>
 		    					<p class="d-flex total-price">
 		    						<span>Total</span>
-		    						<span>$17.60</span>
+		    						<span>￡{{ total_price }}</span>
 		    					</p>
 								</div>
 	          	</div>
@@ -116,23 +116,31 @@
 {#											</div>#}
 {#										</div>#}
 {#									</div>#}
-									<div class="form-group">
+
+                                    {% if points == 0 %}
+                                        <div class="col-md-12">
+                                            <p style="font-size:12px;color:darkred;">Tips: Your have 0 points. 100 points can be worth 1 pound when placing an order. Points can be earned by placing an order and commenting on an order.</p>
+                                        </div>
+                                    {% else %}
+                                        <div class="form-group">
 										<div class="col-md-12">
 											<div class="radio">
-											   <label><input type="checkbox" name="optradio" class="mr-2"> Wallet Points ({{ wallet.points }})</label>
+											   <label><input type="checkbox" name="optradio" class="mr-2" id="id_points_checkbox" data-total-price="{{ total_price }}" data-points="{{ points }}"> Wallet Points ({{ points }} points worth ￡0)</label>
 											</div>
 										</div>
 									</div>
+                                    {% endif %}
+
 
                                     <div class="col-md-12">
-                                        <p>You need to pay:</p>
-                                        <p>￡100</p>
+                                        <p style="font-size:20px;"><b>You need to pay:</b></p>
+                                        <p id="id_checkout_cash" style="font-size:20px;"><b>￡{{ total_price }}</b></p>
                                     </div>
 									
 									
 									<div class="modal-footer">
 										
-										<button type="button" class="btn btn-primary btn-lg checkout-form" id="checkout-form" >Pay</button>
+										<button type="button" class="btn btn-primary btn-lg checkout-form" id="checkout-form" data-order-id="{{ order_id }}" data-first_name="{{ checkout.first_name }}" data-last_name="{{ checkout.last_name }}"  data-address="{{ checkout.address }}" data-city="{{ checkout.city }}" data-zipcode="{{ checkout.zipcode }}" data-email="{{ checkout.email }}" data-phone="{{ checkout.phone }}">Pay</button>
 									  </div>
 								</div>
 	          	</div>
@@ -142,44 +150,4 @@
       </div>
     </section> <!-- .section -->
 
-{% endblock %}
-    
-  
-{% block script_block %}
-  <script>
-		$(document).ready(function(){
-
-		var quantitiy=0;
-		   $('.quantity-right-plus').click(function(e){
-		        
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		            
-		            $('#quantity').val(quantity + 1);
-
-		          
-		            // Increment
-		        
-		    });
-
-		     $('.quantity-left-minus').click(function(e){
-		        // Stop acting like a button
-		        e.preventDefault();
-		        // Get the field name
-		        var quantity = parseInt($('#quantity').val());
-		        
-		        // If is not undefined
-		      
-		            // Increment
-		            if(quantity>0){
-		            $('#quantity').val(quantity - 1);
-		            }
-		    });
-		    
-		});
-	</script>
 {% endblock %}

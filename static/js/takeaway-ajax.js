@@ -63,10 +63,10 @@ $(document).ready(function () {
         alert("减少数量" + food_id)
 
         $.get('/takeaway/minusQuantityFromCart',
-              {'food_id': food_id},
-              function(data) {
-                  $('#id_cart').html(`<span class="icon-shopping_cart"></span>[${data}]`);
-              });
+            {'food_id': food_id},
+            function (data) {
+                $('#id_cart').html(`<span class="icon-shopping_cart"></span>[${data}]`);
+            });
     });
 
     $('.cart_plus').click(function () {
@@ -92,7 +92,19 @@ $(document).ready(function () {
             })
     });
 
+    $('#id_points_checkbox').change(function () {
+        var isChecked = $('#id_points_checkbox').is(':checked');
+        if (isChecked) {
+            alert("我被选中了");
+            // 要修改
+            $('#id_checkout_cash').html("<b>￡" + $(this).attr('data-total-price') + "</b>")
+        } else {
+            $('#id_checkout_cash').html("<b>￡" + $(this).attr('data-total-price') + "</b>")
+        }
+    });
+
     $('#checkout-form').click(function () {
+        var order_id = $(this).attr('data-order-id');
 
         var first_name = $(this).attr('data-first_name');
         var last_name = $(this).attr('data-last_name');
@@ -102,13 +114,41 @@ $(document).ready(function () {
         var email = $(this).attr('data-email');
         var phone = $(this).attr('data-phone');
 
+        var total_price = $('#id_points_checkbox').attr('data-total-price');
+        var points = $('#id_points_checkbox').attr('data-points');
 
-        $.get('/takeaway/checkout_save_data',
+        var payment_points = 0;
+        var payment_cash = 0;
+
+        var isChecked = $('#id_points_checkbox').is(':checked');
+        if (isChecked) {
+            //用了积分
+            payment_points = parseFloat(points);
+            // 要修改
+            var worth_cash = payment_points / 100;
+            var float_total_price = parseFloat(total_price);
+            payment_cash = 0;
+            if (worth_cash >= float_total_price) {
+                payment_cash = 0;
+            } else {
+                payment_cash = float_total_price - worth_cash;
+            }
+        } else {
+            //未用积分
+            payment_points = 0;
+            // 要修改
+            payment_cash = parseFloat(total_price);
+        }
+
+        $.get('/takeaway/placeOrder',
             {
                 'first_name': first_name, 'last_name': last_name,
                 'city': city,
                 'zipcode': zipcode, 'email': email,
-                'phone': phone
+                'phone': phone,
+                'payment_points': payment_points,
+                'payment_cash': payment_cash,
+                'order_id': order_id,
             },
             function (response) {
                 if (response.success) {
@@ -118,8 +158,8 @@ $(document).ready(function () {
                 }
             })
     });
-
 });
+
 
 function addFoodToCart(food_id, count, callback) {
     $.get('/takeaway/addCart',

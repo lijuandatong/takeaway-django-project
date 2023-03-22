@@ -261,25 +261,38 @@ def product(request):
     return render(request, 'takeaway/product.html', context=context_dict)
 
 
-class checkout_save_data(View):
+class PlaceOrder(View):
     def get(self, request):
         first_name = request.GET['first_name']
         last_name = request.GET['last_name']
-
         city = request.GET['city']
         zipcode = request.GET['zipcode']
         email = request.GET['email']
         phone = request.GET['phone']
+        points = request.GET['payment_points']
+        cash = request.GET['payment_cash']
+        order_id = request.GET['order_id']
 
         # Create a new customer object with the retrieved information
-        checkout = Checkout.objects.create(first_name=first_name, last_name=last_name,
-                                           city=city, zipcode=zipcode, email=email, phone=phone)
+        order = Order.objects.get(order_id=order_id)
+        order.first_name = first_name
+        order.last_name = last_name
+        order.city = city
+        order.zipcode = zipcode
+        order.email = email
+        order.phone = phone
+        if points == 0:
+            order.payment = '￡' + str(cash)
+        elif cash == 0:
+            order.payment = str(points) + 'points'
+        else:
+            order.payment = '￡' + str(cash) + ' + '+ str(points) + 'points'
 
         # Save the customer object to the database
-        checkout.save()
-        messages.success(request, 'Order placed successfully.')
+        order.save()
 
-        # Return a JSON response indicating success
+        # 还要更新用户钱包数据
+
         response = {'success': True}
         return JsonResponse(response)
 
@@ -302,7 +315,8 @@ class CartView(View):
             total_price += cart_detail.total_price
             total_discount += cart_detail.total_discount
 
-        context_dict = {'cart_detail_list': cart_detail_list,
+        context_dict = {'cart_id': cart.cart_id,
+                        'cart_detail_list': cart_detail_list,
                         'total_price': total_price,
                         'total_discount': total_discount}
         return render(request, 'takeaway/cart.html', context_dict)
@@ -310,23 +324,39 @@ class CartView(View):
 
 class CheckoutView(View):
     @method_decorator(login_required)
-    def get(self, request):
+    def get(self, request, cart_id):
+        # 下单并进入支付页面
+        order = Order.objects.get_or_create(user=request.user)[0]
+        # "0"未支付 "1"支付
+        order.delivery_state = "0"
+        order.save()
+        print("下单成功,orderid为：" + str(order.order_id))
+
+        cart = Cart.objects.get(cart_id=cart_id)
+        cart_detail_list = CartDetail.objects.filter(cart=cart)
+
+        total_price = 0
+        total_discount = 0
+
+        for cart_detail in cart_detail_list:
+            order_detail = OrderDetail.objects.get_or_create(order=order, food=cart_detail.food)[0]
+            order_detail.count = cart_detail.count
+            order_detail.save()
+            print("订单明细保存成功，food为：" + str(order_detail.food.food_id))
+
+            total_price += cart_detail.total_price
+            total_discount += cart_detail.total_discount
+
         print("下单页面进入")
-        # try:
-        #     cart = Cart.objects.get(user=request.user)
-        # except Cart.DoesNotExist:
-        #     return None
-        #
-        # cart_detail_list = CartDetail.objects.filter(cart=cart)
-        #
-        # total_price = 0
-        # total_discount = 0
-        # for cart_detail in cart_detail_list:
-        #     print("购物车里的商品为：" + cart_detail.food.title)
-        #     total_price += cart_detail.total_price
-        #     total_discount += cart_detail.total_discount
-        #
-        context_dict = {'msg': "",
-                        }
+
+        wallet = Wallet.objects.get_or_create(user=request.user)[0]
+        cash = wallet.cash
+        points = wallet.points
+
+        context_dict = {'order_id': order.order_id,
+                        'total_price': total_price,
+                        'total_discount': total_discount,
+                        'cash': cash,
+                        'points': points}
 
         return render(request, 'takeaway/checkout.html', context_dict)
