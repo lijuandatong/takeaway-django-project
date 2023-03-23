@@ -365,13 +365,15 @@ class PlaceOrder(View):
         print('消费了：' + cash)
         wallet.cash -= float(cash)
         wallet.points -= int(points)
+
+        # 给用户反分
+        if cash > 10:
+            wallet.points += 100
+
         wallet.save()
 
         # 清空用户购物车
         Cart.objects.get(user=request.user).delete()
 
-        # 要修改 跳转到我的订单
-        food_list = Food.objects.all()
-        context_dict = {'foods': food_list[1:],
-                        'special_food': food_list[0]}
-        return render(request, 'takeaway/index.html', context_dict)
+        context_dict = {'data': 'successful'}
+        return HttpResponse(context_dict)

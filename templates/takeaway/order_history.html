@@ -17,26 +17,28 @@ history
 
     <section class="ftco-section">
         {% for order in orders %}
-        <div class="order">
-            <h2><a href="{% url 'takeaway:orderdetail' order.order_id%}">Order #{{ order.order_id }}</a></h2>
-            <div class="order-info">
-                <div class="order-id">Order ID: {{ order.order_id }}</div>
-                <div class="order-date">Date: {{ order.date }}</div>
-                <div class="order-status">
-                    Status: <span class="status status-delivered">{{ order.delivery_state }}</span>
+            {% if order.delivery_state == '1' %}
+            <div class="order">
+                <h2><a href="{% url 'takeaway:orderdetail' order.order_id%}">Order #{{ order.order_id }}</a></h2>
+                <div class="order-info">
+                    <div class="order-id">Order ID: {{ order.order_id }}</div>
+                    <div class="order-date">Date: {{ order.date }}</div>
+                    <div class="order-status">
+                        Status: <span class="status status-delivered">Delivered</span>
+                    </div>
                 </div>
-            </div>
 
 
-            <div class="order-details">
-                <div>
-                    <a href="{% url 'takeaway:orderdetail' order.order_id%}">View order Details</a>
-                </div>
-                <div>
-                    Total: {{ order.payment }}
+                <div class="order-details">
+                    <div>
+                        <a href="{% url 'takeaway:orderdetail' order.order_id%}">View order Details</a>
+                    </div>
+                    <div>
+                        Total: {{ order.payment }}
+                    </div>
                 </div>
             </div>
-        </div>
+            {% endif %}
         {% endfor %}
     </section>
 
