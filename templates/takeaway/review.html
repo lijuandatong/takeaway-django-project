@@ -31,7 +31,7 @@ history
                 <div class="food-name">{{ orderdetail.food }}</div>
                 <div class="food-count">x {{ orderdetail.count }}</div>
                 <div class="food-review-submit"><p class="btn btn-primary" data-toggle="modal"
-                                                   data-target="#reviewModal">Review</p></div>
+                                                   data-target="#reviewModal" data-food="{{ orderdetail.food }}">Review</p></div>
             </div>
             {% endfor %}
             <div class="order-details">
@@ -62,7 +62,7 @@ history
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="btn_review"
-                        data-username="{{ user.username }}" data-food="{{ orderdetail.food }}">
+                        data-username="{{ user.username }}" data-food="">
                     Feedback
                 </button>
             </div>
