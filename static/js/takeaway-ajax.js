@@ -131,17 +131,6 @@ $(document).ready(function () {
             })
     });
 
-    $('#id_points_checkbox').change(function () {
-        var isChecked = $('#id_points_checkbox').is(':checked');
-        if (isChecked) {
-            alert("我被选中了");
-            // 要修改
-            $('#id_checkout_cash').html("<b>￡" + $(this).attr('data-total-price') + "</b>")
-        } else {
-            $('#id_checkout_cash').html("<b>￡" + $(this).attr('data-total-price') + "</b>")
-        }
-    });
-
     $('#checkout-form').click(function () {
         var order_id = $(this).attr('data-order-id');
 
@@ -153,7 +142,7 @@ $(document).ready(function () {
         var email = $('#id_checkout_email').val();
         var phone = $('#id_checkout_phone').val();
 
-        var total_price = $('#id_points_checkbox').attr('data-total-price');
+        var total_price = $('#id_checkout_cash').text().substring(1);
         var points = $('#id_points_checkbox').attr('data-points');
 
         var payment_points = 0;
@@ -190,14 +179,31 @@ $(document).ready(function () {
                 'payment_points': payment_points,
                 'payment_cash': payment_cash,
                 'order_id': order_id,
-            },
-            function (response) {
-                if (response.success) {
-                    alert('Order placed successfully!');
-                } else {
-                    alert('There was an error with your order. Please check the form and try again.');
+            })
+    });
+
+    $('#btn_checkout_charge').click(function () {
+        var amount = $('#id_amount').val();
+        if (amount == '') {
+            alert("You should input the amount!");
+            return;
+        }
+        //把用户输入的cash写入到数据库
+        var username = $(this).attr('data-username');
+        var total_price = $(this).attr('data-total-price');
+
+        $.get('/takeaway/charge',
+            {'username': username, 'amount': amount},
+            function (data) {
+                $('#wallet_cash').html('<b>￡' + data + '</b>');
+                if(data > parseFloat(total_price)){
+                    $('#checkout-charge').hide();
+                    $('#checkout-form').prop("disabled", false);
                 }
             })
+
+        // dismiss dialog
+        $('#chargeModal').modal('hide')
     });
 });
 

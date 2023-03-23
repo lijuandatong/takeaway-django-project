@@ -11,8 +11,17 @@ $(document).ready(function () {
 
     initMap();
 
+    $('#id_points_checkbox').change(function () {
+        var isChecked = $('#id_points_checkbox').is(':checked');
+        if (isChecked) {
+            alert("我被选中了");
+            // 要修改
+            $('#id_checkout_cash').html("<b>￡" + $(this).attr('data-total-price') + "</b>")
+        } else {
+            $('#id_checkout_cash').html("<b>￡" + $(this).attr('data-total-price') + "</b>")
+        }
+    });
 });
-
 
 function initMap() {
 // Create a new map object

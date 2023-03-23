@@ -20,18 +20,12 @@ from django.contrib import messages
 
 class IndexView(View):
     def get(self, request):
-        cart_count = 0
-
-        if request.user.is_authenticated:
-            print("用户登录了")
-            cart_count = getCartCount(request.user)
 
         # Query the database for a list of ALL foods currently stored.
         food_list = Food.objects.all()
 
         context_dict = {'foods': food_list[1:],
-                        'special_food': food_list[0],
-                        'cart_count': cart_count}
+                        'special_food': food_list[0]}
 
         # Return a rendered response to send to the client.
         # We make use of the shortcut function to make our lives easier.
@@ -252,14 +246,6 @@ def getCartCount(user):
     return cart_count
 
 
-# def product(request, food_id):
-#     # food_id = '002'
-#     food = Food.objects.get(food_id=food_id)
-#     address = food.address
-#     comments = Comment.objects.filter(food=food)
-#     context_dict = {'bold message': 'product!', 'address': address, 'comments': comments, 'food': food}
-#     return render(request, 'takeaway/product.html', context=context_dict)
-
 class FoodDetail(View):
     def get(self, request, food_id):
 
@@ -275,7 +261,7 @@ class CartView(View):
     def get(self, request):
         print("购物车页面进入")
         try:
-            cart = Cart.objects.get(user=request.user)
+            cart = Cart.objects.get_or_create(user=request.user)[0]
         except Cart.DoesNotExist:
             return None
 
@@ -299,7 +285,7 @@ class CheckoutView(View):
     @method_decorator(login_required)
     def get(self, request, cart_id):
         # 下单并进入支付页面
-        order = Order.objects.get_or_create(user=request.user)[0]
+        order = Order.objects.create(user=request.user)
         # "0"未支付 "1"支付
         order.delivery_state = "0"
         order.save()
@@ -330,7 +316,8 @@ class CheckoutView(View):
                         'total_price': total_price,
                         'total_discount': total_discount,
                         'cash': cash,
-                        'points': points}
+                        'points': points,
+                        }
 
         return render(request, 'takeaway/checkout.html', context_dict)
 
@@ -346,6 +333,8 @@ class PlaceOrder(View):
         phone = request.GET['phone']
         points = request.GET['payment_points']
         cash = request.GET['payment_cash']
+        print('用户消费了：' + cash)
+        print('用户消费的积分为：' + points)
         order_id = request.GET['order_id']
 
         # Create a new customer object with the retrieved information
@@ -365,10 +354,22 @@ class PlaceOrder(View):
             order.payment = '￡' + str(cash) + ' + ' + str(points) + ' points'
 
         print('存入的payment为：' + order.payment)
-        order.delivery_state = "1"
+        order.delivery_state = '1'
         order.save()
 
         # 还要更新用户钱包数据
+        wallet = Wallet.objects.get(user=request.user)
+        # print('用户钱包：' + wallet.cash)
+        print('消费了：' + cash)
+        wallet.cash -= float(cash)
+        wallet.points -= int(points)
+        wallet.save()
 
-        response = {'success': True}
-        return JsonResponse(response)
+        # 清空用户购物车
+        Cart.objects.get(user=request.user).delete()
+
+        # 要修改 跳转到我的订单
+        food_list = Food.objects.all()
+        context_dict = {'foods': food_list[1:],
+                        'special_food': food_list[0]}
+        return render(request, 'takeaway/index.html', context_dict)
