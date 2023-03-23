@@ -179,6 +179,7 @@ $(document).ready(function () {
                 'payment_cash': payment_cash,
                 'order_id': order_id,
             },function (data) {
+                alert("You pay successfully!");
                 window.location.href = "/takeaway";
             })
     });

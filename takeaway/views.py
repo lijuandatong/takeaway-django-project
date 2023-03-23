@@ -367,7 +367,7 @@ class PlaceOrder(View):
         wallet.points -= int(points)
 
         # 给用户反分
-        if cash > 10:
+        if float(cash) > 10:
             wallet.points += 100
 
         wallet.save()
