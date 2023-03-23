@@ -43,6 +43,7 @@
                         <a class="dropdown-item" href="{% url 'auth_logout' %}?next={% url 'takeaway:index'%}">Logout</a>
                     </div>
                 </li>
+{#                {% getCartCount user.username %}#}
                 <li class="nav-item cta cta-colored"><a href="{% url 'takeaway:cart' %}" class="nav-link" id="id_cart"><span
                         class="icon-shopping_cart"></span>[{{ cart_count }}]</a></li>
                 {% else %}

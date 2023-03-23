@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load takeaway_template_tags %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -37,7 +38,9 @@
 </head>
 
 <body class="goto-here">
-{% include 'takeaway/header.html' %}
+{#{% include 'takeaway/header.html' %}#}
+
+{% getCartCount user %}
 
 {% block body_block %}{% endblock %}
 
