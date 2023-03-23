@@ -103,7 +103,7 @@
                     <h4><a href="#">{{ special_food.title }}</a></h4>
                     <p><span class="mr-2 price-dc">￡{{ special_food.price }}</span><span class="price-sale">now ￡{{ special_food.discounted_price }} only</span></p>
 {#                    <span class="price">$15 <a href="#">now $10 only</a></span>#}
-                    <p><a href="{% url 'takeaway:product'%}" class="btn btn-primary">View Details</a></p>
+                    <p><a href="{% url 'takeaway:foodDetail' special_food.food_id %}" class="btn btn-primary">View Details</a></p>
                 </div>
             </div>
         </div>
@@ -122,12 +122,12 @@
                 {% for food in foods %}
                     <div class="col-md-6 col-lg-3 ftco-animate">
                     <div class="product">
-                        <a href="{% url 'takeaway:product'%}" class="img-prod"><img class="img-fluid" src="{{ MEDIA_URL }}{{ food.picture }}"
+                        <a href="{% url 'takeaway:foodDetail' food.food_id %}" class="img-prod"><img class="img-fluid" src="{{ MEDIA_URL }}{{ food.picture }}"
                                                           alt="Colorlib Template">
                             <div class="overlay"></div>
                         </a>
                         <div class="text py-3 pb-4 px-3 text-left">
-                            <h3><a href="{% url 'takeaway:product'%}">{{ food.title}}</a></h3>
+                            <h3><a href="{% url 'takeaway:foodDetail' food.food_id %}">{{ food.title}}</a></h3>
                             <input class="input-rating" type="text" title="" data-min=0 data-max=5 data-step=0.1 data-size="xs" value="{{ food.rating }}">
                             <div class="d-flex">
                                 <div class="pricing">
