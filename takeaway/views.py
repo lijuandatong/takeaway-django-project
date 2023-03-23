@@ -365,6 +365,11 @@ class PlaceOrder(View):
         print('消费了：' + cash)
         wallet.cash -= float(cash)
         wallet.points -= int(points)
+
+        # 给用户反分
+        if cash > 10:
+            wallet.points += 100
+
         wallet.save()
 
         # 清空用户购物车
