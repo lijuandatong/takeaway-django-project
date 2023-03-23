@@ -311,12 +311,14 @@ class CheckoutView(View):
         wallet = Wallet.objects.get_or_create(user=request.user)[0]
         cash = wallet.cash
         points = wallet.points
+        equivalent_cash = float(points) / 100
 
         context_dict = {'order_id': order.order_id,
                         'total_price': total_price,
                         'total_discount': total_discount,
                         'cash': cash,
                         'points': points,
+                        'equivalent_cash': equivalent_cash
                         }
 
         return render(request, 'takeaway/checkout.html', context_dict)

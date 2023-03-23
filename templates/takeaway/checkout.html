@@ -125,7 +125,7 @@
                                         <div class="form-group">
 										<div class="col-md-12">
 											<div class="radio">
-											   <label><input type="checkbox" name="optradio" class="mr-2" id="id_points_checkbox" data-total-price="{{ total_price }}" data-points="{{ points }}"> Wallet Points ({{ points }} points worth ￡0)</label>
+                                                <label><input type="checkbox" class="mr-2" id="id_points_checkbox" data-total-price="{{ total_price }}" data-points="{{ points }}" data-equivalent-cash="{{ equivalent_cash }}"> Wallet Points ({{ points }}) <span id="worth_cash" style="color: red">worth ￡{{ equivalent_cash }}</span></label>
 											</div>
 										</div>
 									</div>

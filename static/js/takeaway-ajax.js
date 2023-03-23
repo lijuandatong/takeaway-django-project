@@ -142,8 +142,10 @@ $(document).ready(function () {
         var email = $('#id_checkout_email').val();
         var phone = $('#id_checkout_phone').val();
 
-        var total_price = $('#id_checkout_cash').text().substring(1);
+        var total_price = $('#id_points_checkbox').attr('data-total-price');
         var points = $('#id_points_checkbox').attr('data-points');
+        var equivalent_cash = $('#id_points_checkbox').attr('data-equivalent-cash');
+        var need_cash = $('#id_checkout_cash').text().substring(1);
 
         var payment_points = 0;
         var payment_cash = 0;
@@ -151,21 +153,20 @@ $(document).ready(function () {
         var isChecked = $('#id_points_checkbox').is(':checked');
         if (isChecked) {
             //用了积分
-            payment_points = parseFloat(points);
-            // 要修改
-            var worth_cash = payment_points / 100;
+            // payment_points = parseFloat(points);
             var float_total_price = parseFloat(total_price);
             payment_cash = 0;
-            if (worth_cash >= float_total_price) {
+            if (equivalent_cash >= float_total_price) {
                 payment_cash = 0;
+                payment_points = float_total_price * 100;
             } else {
-                payment_cash = float_total_price - worth_cash;
+                payment_points = points;
+                payment_cash = need_cash;
             }
         } else {
             //未用积分
             payment_points = 0;
-            // 要修改
-            payment_cash = parseFloat(total_price);
+            payment_cash = need_cash;
         }
 
         alert('用了积分：' + payment_points + ",用了现金：" + payment_cash);
