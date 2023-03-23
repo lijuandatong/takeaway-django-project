@@ -169,8 +169,6 @@ $(document).ready(function () {
             payment_cash = need_cash;
         }
 
-        alert('用了积分：' + payment_points + ",用了现金：" + payment_cash);
-
         $.get('/takeaway/placeOrder',
             {
                 'first_name': first_name, 'last_name': last_name,
@@ -180,6 +178,8 @@ $(document).ready(function () {
                 'payment_points': payment_points,
                 'payment_cash': payment_cash,
                 'order_id': order_id,
+            },function (data) {
+                window.location.href = "/takeaway";
             })
     });
 
